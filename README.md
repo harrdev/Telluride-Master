@@ -8,7 +8,8 @@ Compete in ski competitions against another player.  A timer starts and the play
 
 # Wireframe
 ![Image of Wireframe]
-(https://github.com/harrdev/Telluride-Master/blob/main/files/Screen%20Shot%202021-10-22%20at%2011.17.46%20AM.png)
+![Screen Shot 2021-10-22 at 11 17 46 AM](https://user-images.githubusercontent.com/86644498/138520229-935ed28a-ddb5-4811-9f6d-dca816ccf992.png)
+
 
 ## MVP Goals  BREAK DOWN INTO MORE DETAIL HERE
     * Core functionality
