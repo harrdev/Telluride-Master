@@ -5,6 +5,7 @@
 // Code out timer
 // Code out score keeper
 
+// Game board 
 const game = document.getElementById("canvas")
 // Set up height and width variables based on computed style
 game.setAttribute("width", getComputedStyle(game)["width"])
