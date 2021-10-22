@@ -27,3 +27,9 @@ Compete in ski competitions against another player.  A timer starts and the play
 ## Potential Roadblocks
     * Time - 1 week to deliver
     * Logic with randomly appearing obstacles (trees, etc)
+
+# Research These!
+    1. When player presses down, game world scrolls up?
+    2. Randomly placing trees below predetermined x-coords
+    3. How accurate hit detection will be with odd shaped sprites, maybe cannot be really accurate?  Check into collision detection options
+    
