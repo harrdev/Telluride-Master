@@ -1,11 +1,14 @@
 # Telluride-Master
-Compete in ski competitions
+Compete in ski competitions against another player.  A timer starts and the player avoids obstacles while seeing how long they can ski for before crashing.  The score of each player will be the time in seconds that they were up before crashing.
 
 ## Tech stack
 * HTML & HTML Canvas
 * CSS
 * Javascript
 
+# Wireframe
+![Image of Wireframe]
+(https://github.com/harrdev/Telluride-Master/blob/main/files/Screen%20Shot%202021-10-22%20at%2011.17.46%20AM.png)
 
 ## MVP Goals
     * Core functionality
@@ -18,7 +21,7 @@ Compete in ski competitions
 ## Stretch Goals
     1. Advanced sprites
     2. Smoother animation
-    3. Sound/Music
+    3. Sound / Music
     4. Speed boost "powerups"
 
 ## Potential Roadblocks
