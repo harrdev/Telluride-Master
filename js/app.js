@@ -4,6 +4,7 @@
 // Code out player movement function
 // Code out timer
 // Code out score keeper
+// Do I need DOMContent loaded????
 
 // Game board 
 const game = document.getElementById("canvas")
@@ -26,6 +27,7 @@ class Trees {
         this.alive = true
     }
     render = function () {
+        
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
@@ -41,7 +43,7 @@ class Skier {
         this.alive = true
         this.direction = {
             // don't need up up: false,
-            // up: false,
+            up: false,
             down: false,
             right: false,
             left: false
@@ -50,7 +52,7 @@ class Skier {
     // Key directions
     setDirection(key) {
         // ***** TAKE OUT W KEY WHEN DONE, TESTING
-        // if (key.toLowerCase() == "w") this.direction.up == true
+        if (key.toLowerCase() == "w") this.direction.up == true
         if (key.toLowerCase() == "s") this.direction.down = true
         if (key.toLowerCase() == "a") this.direction.left = true
         if (key.toLowerCase() == "d") this.direction.right = true
@@ -64,10 +66,12 @@ class Skier {
     }
     movePlayer() {
         // ***** TAKE OUT DIRECTION UP WHEN DONE, TESTING
-        // if (this.direction.up) this.y -= 10
-        // if (this.y <= 0) {
-        //     this.y = 0
-        // }
+        // move up
+        if (this.direction.up) this.y -= 10
+        if (this.y <= 0) {
+            this.y = 0
+        }
+        // move left
         if (this.direction.left) this.x -= 10
         if (this.x <= 0) {
             this.x = 0
@@ -95,9 +99,9 @@ let player = new Skier(10, 10, "#FF0000", 16, 16)
 const gameLoop = () => {
     // clear the gameboard (canvas) on each frame
     ctx.clearRect(0, 0, game.width, game.height)
-
     player.render()
     player.movePlayer()
+    drawTriangle()
 }
 
 let stopGameLoop = () => { clearInterval(gameInterval) }
@@ -112,3 +116,23 @@ document.addEventListener('keyup', (e) => {
     }
 })
 let gameInterval = setInterval(gameLoop, 60)
+
+// To draw a triangle
+function drawTriangle() {
+    let height = 50 * Math.cos(Math.PI / 7);
+  
+    ctx.beginPath();
+    ctx.moveTo(100, 300);
+    ctx.lineTo(200, 300);
+    ctx.lineTo(150, 300 - height);
+    ctx.closePath();
+  
+    // the outline
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = '#249225';
+    ctx.stroke();
+  
+    // the fill color
+    ctx.fillStyle = "#249225";
+    ctx.fill();
+  }
