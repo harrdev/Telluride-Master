@@ -5,7 +5,7 @@
 // Code out timer
 // Code out score keeper
 // Do I need DOMContent loaded????
-// Changes setinterval to animateFrames
+// Change setinterval to animateFrames
 // Player should stay in place at top 1/3 of screen.  Trees should scroll up
 
 // Game board 
@@ -18,20 +18,28 @@ console.log("Game height: ", game.height)
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
 
-// Create classes (player, trees)
-class Trees {
-    constructor(x, y, color, width, height) {
+class Tree {
+    constructor(x, y) {
         this.x = x
         this.y = y
-        this.color = color
-        this.width = width
-        this.height = height
-        this.alive = true
     }
-    render = function () {
-        
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+    draw = function() {
+        let height = 50 * Math.cos(Math.PI / 7);
+        // Would need to instantiate these and place them randomly along x-axis and y-axis(minus 300)(to account for them being below the skier)
+        ctx.beginPath();
+        ctx.moveTo(110, 300);
+        ctx.lineTo(150, 300);
+        ctx.lineTo(131, 300 - height);
+        ctx.closePath();
+    
+        // the outline
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = '#249225';
+        ctx.stroke();
+    
+        // the fill color
+        ctx.fillStyle = "#249225";
+        ctx.fill();
     }
 }
 
@@ -44,7 +52,6 @@ class Skier {
         this.height = height
         this.alive = true
         this.direction = {
-            // don't need up up: false,
             up: false,
             down: false,
             right: false,
@@ -53,15 +60,13 @@ class Skier {
     }
     // Key directions
     setDirection(key) {
-        // ***** TAKE OUT W KEY WHEN DONE, TESTING
-        if (key.toLowerCase() == "w") this.direction.up == true
+        if (key.toLowerCase() == "w") this.direction.up = true
         if (key.toLowerCase() == "s") this.direction.down = true
         if (key.toLowerCase() == "a") this.direction.left = true
         if (key.toLowerCase() == "d") this.direction.right = true
     }
     unsetDirection(key) {
-        // ***** TAKE OUT W KEY WHEN DONE, TESTING
-        if (key.toLowerCase() == "w") this.direction.up == false
+        if (key.toLowerCase() == "w") this.direction.up = false
         if (key.toLowerCase() == "s") this.direction.down = false
         if (key.toLowerCase() == "a") this.direction.left = false
         if (key.toLowerCase() == "d") this.direction.right = false
@@ -95,16 +100,21 @@ class Skier {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
-
-let player = new Skier(500, 30, "#FF0000", 16, 16)
-
+const x = game.width / 2
+// Divided by 5 to be set at top mid of screen
+const y = game.height / 5
+let player = new Skier(x, y, "#FF0000", 20, 20)
+let tree = new Tree(600,600)
 function start () {
     // requestAnimationFrame creates a loop, passing animate through it until we tell it to stop
     requestAnimationFrame(start)
     ctx.clearRect(0, 0, game.width, game.height)
     player.render()
     player.movePlayer()
-    drawTriangle()
+    tree.draw()
+    pad()
+    // Need to impliment random triangles below set y-axis
+    //drawTriangle()
 }
 start()
 
@@ -120,22 +130,38 @@ document.addEventListener('keyup', (e) => {
 })
 
 // To draw a triangle
-function drawTriangle() {
-    let height = 50 * Math.cos(Math.PI / 7);
+// function drawTriangle() {
+//     let height = 50 * Math.cos(Math.PI / 7);
+//     // Would need to instantiate these and place them randomly along x-axis and y-axis(minus 300)(to account for them being below the skier)
+//     ctx.beginPath();
+//     ctx.moveTo(110, 300);
+//     ctx.lineTo(150, 300);
+//     ctx.lineTo(131, 300 - height);
+//     ctx.closePath();
   
-    ctx.beginPath();
-    ctx.moveTo(110, 300);
-    ctx.lineTo(150, 300);
-    ctx.lineTo(131, 300 - height);
-    ctx.closePath();
+//     // the outline
+//     ctx.lineWidth = 10;
+//     ctx.strokeStyle = '#249225';
+//     ctx.stroke();
   
-    // the outline
-    ctx.lineWidth = 10;
-    ctx.strokeStyle = '#249225';
-    ctx.stroke();
-  
-    // the fill color
-    ctx.fillStyle = "#249225";
-    ctx.fill();
-  }
+//     // the fill color
+//     ctx.fillStyle = "#249225";
+//     ctx.fill();
+//   }
+
+// Click event to start!  Add start button
+addEventListener("click", () => {
+    console.log("Click event")
+})
+
+// create a timer
+let sec = 0
+function pad ( val ) { 
+    return val > 9 ? val : "0" + val
+}
+setInterval( function(){
+    document.getElementById("seconds").innerHTML=pad(++sec%60)
+    document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10))
+}, 1000)
+// stop the timer *** Need to put conditional in to stop this for when player crashes
 

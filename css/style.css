@@ -10,6 +10,7 @@ body {
     max-width: 75em;
     background-color: white;
     margin: 0 auto;
+    padding: 0;
 }
     
 main {
@@ -19,7 +20,18 @@ main {
 
 #canvas {
     display: block;
+    /* background-image: url("/files/snowBackground.jpeg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover; */
     background-color: yellow;
     margin: 0 auto;
     text-align: center;
+}
+#timer {
+    height: 50px;
+    width: 200px;
+    background-color: blue;
+    text-align: center;
+    font-size: 40px;
 }
