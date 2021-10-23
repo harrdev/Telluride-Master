@@ -5,6 +5,8 @@
 // Code out timer
 // Code out score keeper
 // Do I need DOMContent loaded????
+// Changes setinterval to animateFrames
+// Player should stay in place at top 1/3 of screen.  Trees should scroll up
 
 // Game board 
 const game = document.getElementById("canvas")
@@ -67,22 +69,22 @@ class Skier {
     movePlayer() {
         // ***** TAKE OUT DIRECTION UP WHEN DONE, TESTING
         // move up
-        if (this.direction.up) this.y -= 10
+        if (this.direction.up) this.y -= 5
         if (this.y <= 0) {
             this.y = 0
         }
         // move left
-        if (this.direction.left) this.x -= 10
+        if (this.direction.left) this.x -= 5
         if (this.x <= 0) {
             this.x = 0
         }
         // move down
-        if (this.direction.down) this.y += 10
+        if (this.direction.down) this.y += 5
         if (this.y + this.height >= game.height) {
             this.y = game.height - this.height
         }
         // move right
-        if (this.direction.right) this.x += 10
+        if (this.direction.right) this.x += 5
         if (this.x + this.width >= game.width) {
             this.x = game.width - this.width
         }
@@ -94,17 +96,18 @@ class Skier {
     }
 }
 
-let player = new Skier(10, 10, "#FF0000", 16, 16)
+let player = new Skier(500, 30, "#FF0000", 16, 16)
 
-const gameLoop = () => {
-    // clear the gameboard (canvas) on each frame
+function start () {
+    // requestAnimationFrame creates a loop, passing animate through it until we tell it to stop
+    requestAnimationFrame(start)
     ctx.clearRect(0, 0, game.width, game.height)
     player.render()
     player.movePlayer()
     drawTriangle()
 }
+start()
 
-let stopGameLoop = () => { clearInterval(gameInterval) }
 // Functions for player movement
 document.addEventListener('keydown', (e) => {
     player.setDirection(e.key)
@@ -115,16 +118,15 @@ document.addEventListener('keyup', (e) => {
         player.unsetDirection(e.key)
     }
 })
-let gameInterval = setInterval(gameLoop, 60)
 
 // To draw a triangle
 function drawTriangle() {
     let height = 50 * Math.cos(Math.PI / 7);
   
     ctx.beginPath();
-    ctx.moveTo(100, 300);
-    ctx.lineTo(200, 300);
-    ctx.lineTo(150, 300 - height);
+    ctx.moveTo(110, 300);
+    ctx.lineTo(150, 300);
+    ctx.lineTo(131, 300 - height);
     ctx.closePath();
   
     // the outline
@@ -136,3 +138,4 @@ function drawTriangle() {
     ctx.fillStyle = "#249225";
     ctx.fill();
   }
+
