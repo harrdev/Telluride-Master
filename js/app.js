@@ -3,7 +3,7 @@
 // basic boxes for now
 // Code out score keeper
 // Do I need DOMContent loaded????
-// Trees should scroll up
+// Trees should scroll up and re-create and keep scrolling
 // Once trees are working and loaded and moving up, remove Skier down movement and up movement.  Skier should only be able to move left and right
 
 // Game board 
@@ -19,29 +19,46 @@ let playerTwoScore = 0;
 const ctx = game.getContext("2d")
 const audio = new Audio("files/gameMusic.wav")
 let gameStateActive = true
-// Array to push out and pop in trees.  Need to create for loop for this
-// Class constructor needs to be filled out to be able to create 1 by calling a newTree.  Once that works, a For Loop needs to be created to pop in a bunch of trees into the array.  Then a Math.random() has to be applied to randomly select a x-coordinate at the bottom of the screen and have velocity upwards in a straight line.  Once it passes the y-0 axis, it needs to pop out of the array
-// Random x coord, set to 600 because it was going off the canvas
-let randoX = Math.floor(Math.random() * 600)
-console.log("Random X coord: ", randoX)
+// Array to push in and pop out trees.
 const trees = []
 class Tree {
-    constructor(x, y) {
-        this.x = x
-        this.y = x + 215
+    // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
+    constructor() {
+        this.x = Math.floor(Math.random() * game.width)
+        this.y = Math.floor(Math.random() * game.height)
+        this.moveX = 1
+        this.moveY = 1
     }
-    draw = function() {
-        let height = 80 * Math.cos(Math.PI / 7)
-        // Would need to instantiate these and place them randomly along x-axis and y-axis(minus 300)(to account for them being below the skier)
+    // update() moves the y-coordinate to move trees upward
+    update() {
+        this.y -= this.moveY
+    }
+    // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to green
+    draw() {
         ctx.beginPath()
-        ctx.moveTo(this.x, this.y)
-        ctx.lineTo(this.y - 150, this.y)
-        ctx.lineTo(this.y-181, this.y - height)
+        ctx.rect(this.x, this.y, 40, 60)
         ctx.fillStyle = "#249225"
         ctx.fill()
     }
 }
-
+// drawTrees() is the function to actually draw them and push into the trees array
+function drawTrees() {
+    for (let i = 0; i < 50; i++) {
+        trees.push(new Tree());
+    }
+}
+// calls the function to execute
+drawTrees()
+// handleTrees takes in the trees array and cycles through all that are in the array to move and draw
+function handleTrees() {
+    for (let i = 0; i < trees.length; i++) {
+        trees[i].update()
+        trees[i].draw()
+    }
+}
+// console log to test the trees array
+console.log(trees)
+// creating class of Skier
 class Skier {
     constructor(x, y, color, width, height) {
         this.x = x
@@ -105,7 +122,6 @@ const x = game.width / 2
 const y = game.height / 5
 // Initialize Skier and Tree (-10 on x to offset width of box)
 let player = new Skier(x - 10, y, "#FF0000", 20, 20)
-let tree = new Tree(randoX, y)
 // Main program, starts game
 function start () { 
     // requestAnimationFrame creates a loop, passing start through it until we tell it to stop
@@ -114,12 +130,8 @@ function start () {
     player.render()
     player.movePlayer()
     audio.play()
-    tree.draw()
-    // Need to impliment random triangles below set y-axis
+    handleTrees()
 }
-// Actually begins the game, calling start()
-
-
 // Functions for player movement, event listeners for the keys
 document.addEventListener('keydown', (e) => {
     player.setDirection(e.key)
@@ -131,7 +143,7 @@ document.addEventListener('keyup', (e) => {
     }
 })
 
-// Click event to start!  Add start button, this is useless right now
+// Click event to start!  Add start button, this starts on mouse click now
 addEventListener("click", () => {
     start()
     pad()
@@ -150,3 +162,49 @@ function pad ( val ) {
 }
 
 // stop the timer *** Need to put conditional in to stop this for when player crashes
+
+// class Tree {
+//     constructor(x, y) {
+//         let randoX = Math.floor(Math.random() * game.width)
+//         let randoY = Math.floor(Math.random() * game.height)
+//         this.x = randoX
+//         this.y = randoX + 215
+//     }
+//     draw() {
+//         let height = 80 * Math.cos(Math.PI / 7)
+//         // Would need to instantiate these and place them randomly along x-axis and y-axis(minus 300)(to account for them being below the skier)
+//         ctx.beginPath()
+//         ctx.moveTo(this.x, this.y)
+//         ctx.lineTo(this.y - 150, this.y)
+//         ctx.lineTo(this.y-181, this.y - height)
+//         ctx.fillStyle = "#249225"
+//         ctx.fill()
+//     }
+// }
+
+
+// WORKING, BUT PROBLEMS GETTING IT TO MOVE CORRECTLY
+// class Tree {
+//     constructor() {
+//         let randoX = Math.floor(Math.random() * game.width)
+//         this.x = randoX
+//         this.y = randoX + 215
+//         this.moveY = 1
+//         this.moveX = 1
+//     }
+//     // Something's not right, triangles are floating towards top left corner
+//     // update moves the tree -1 y and -1 x.  If I change or delete this.x, it doesn't work anymore, it keeps moving but keeps a corner on the x-axis and stretches the triangle
+//     update() {
+//         this.y -= this.moveY
+//         this.x -= this.moveX
+//     }
+//     draw() {
+//         let height = 80 * Math.cos(Math.PI / 7)
+//         ctx.beginPath()
+//         ctx.moveTo(this.x, this.y)
+//         ctx.lineTo(this.y - 150, this.y)
+//         ctx.lineTo(this.y-181, this.y - height)
+//         ctx.fillStyle = "#249225"
+//         ctx.fill()
+//     }
+// }
