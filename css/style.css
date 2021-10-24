@@ -8,7 +8,7 @@ body {
 #container {
     height: 900px;
     max-width: 75em;
-    background-color: white;
+    background-color: bisque;
     margin: 0 auto;
     padding: 0;
 }
@@ -20,11 +20,10 @@ main {
 
 #canvas {
     display: block;
-    /* background-image: url("/files/snowBackground.jpeg");
+    background-image: url("../files/Background-Snow.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: cover; */
-    background-color: yellow;
+    background-size: cover;
     margin: 0 auto;
     text-align: center;
 }
