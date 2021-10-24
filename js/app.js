@@ -1,12 +1,10 @@
-// Draw screen
+// Code out start button event.  Button click will include the start() function
 // Start with fixed objects(trees/players)
 // basic boxes for now
-// Code out player movement function
-// Code out timer
 // Code out score keeper
 // Do I need DOMContent loaded????
-// Change setinterval to animateFrames
-// Player should stay in place at top 1/3 of screen.  Trees should scroll up
+// Trees should scroll up
+// Once trees are working and loaded and moving up, remove Skier down movement and up movement.  Skier should only be able to move left and right
 
 // Game board 
 const game = document.getElementById("canvas")
@@ -17,10 +15,13 @@ console.log("Game width: ", game.width)
 console.log("Game height: ", game.height)
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
+const audio = new Audio("files/gameMusic.wav")
 let gameStateActive = true
-
+// Array to push out and pop in trees.  Need to create for loop for this
+// Class constructor needs to be filled out to be able to create 1 by calling a newTree.  Once that works, a For Loop needs to be created to pop in a bunch of trees into the array.  Then a Math.random() has to be applied to randomly select a x-coordinate at the bottom of the screen and have velocity upwards in a straight line.  Once it passes the y-0 axis, it needs to pop out of the array
+const trees = []
 class Tree {
-    constructor(x, y) {
+    constructor() {
         this.x = x
         this.y = y
     }
@@ -113,12 +114,13 @@ function start () {
     ctx.clearRect(0, 0, game.width, game.height)
     player.render()
     player.movePlayer()
+    audio.play()
     tree.draw()
     pad()
     // Need to impliment random triangles below set y-axis
 }
 // Actually begins the game, calling start()
-start()
+
 
 // Functions for player movement, event listeners for the keys
 document.addEventListener('keydown', (e) => {
@@ -133,6 +135,7 @@ document.addEventListener('keyup', (e) => {
 
 // Click event to start!  Add start button, this is useless right now
 addEventListener("click", () => {
+    start()
     console.log("Click event")
 })
 

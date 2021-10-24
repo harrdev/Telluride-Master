@@ -1,14 +1,32 @@
+html {
+    height: 100%;
+}
+
 body {
-    background-color: bisque;
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
+    background-image: url("../files/bodyBackground.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 50px;
+    font-family: 'Merriweather Sans', sans-serif;
+}
+
+.gameInfo {
+    margin-bottom: 50px;
+    background-color: yellow;
 }
 #container {
     height: 900px;
     max-width: 75em;
-    background-color: bisque;
     margin: 0 auto;
     padding: 0;
 }
@@ -26,6 +44,7 @@ main {
     background-size: cover;
     margin: 0 auto;
     text-align: center;
+    border: 5px solid blue;
 }
 #timer {
     height: 50px;
@@ -33,4 +52,6 @@ main {
     background-color: blue;
     text-align: center;
     font-size: 40px;
+    left: 27%;
+    position: absolute;
 }
