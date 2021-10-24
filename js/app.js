@@ -8,38 +8,37 @@
 
 // Game board 
 const game = document.getElementById("canvas")
-// Set up height and width variables based on computed style
-game.setAttribute("width", getComputedStyle(game)["width"])
-game.setAttribute("height", getComputedStyle(game)["height"])
+// Set up height and width for Canvas
+game.width = 1000;
+game.height = 800;
 console.log("Game width: ", game.width)
 console.log("Game height: ", game.height)
+let playerOneScore = 0;
+let playerTwoScore = 0;
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
 const audio = new Audio("files/gameMusic.wav")
 let gameStateActive = true
 // Array to push out and pop in trees.  Need to create for loop for this
 // Class constructor needs to be filled out to be able to create 1 by calling a newTree.  Once that works, a For Loop needs to be created to pop in a bunch of trees into the array.  Then a Math.random() has to be applied to randomly select a x-coordinate at the bottom of the screen and have velocity upwards in a straight line.  Once it passes the y-0 axis, it needs to pop out of the array
+// Random x coord, set to 600 because it was going off the canvas
+let randoX = Math.floor(Math.random() * 600)
+console.log("Random X coord: ", randoX)
 const trees = []
 class Tree {
-    constructor() {
+    constructor(x, y) {
         this.x = x
-        this.y = y
+        this.y = x + 215
     }
     draw = function() {
-        let height = 50 * Math.cos(Math.PI / 7);
+        let height = 80 * Math.cos(Math.PI / 7)
         // Would need to instantiate these and place them randomly along x-axis and y-axis(minus 300)(to account for them being below the skier)
-        ctx.beginPath();
-        ctx.moveTo(110, 300);
-        ctx.lineTo(150, 300);
-        ctx.lineTo(131, 300 - height);
-        ctx.closePath();
-        // The outline of tree
-        ctx.lineWidth = 10;
-        ctx.strokeStyle = '#249225';
-        ctx.stroke();
-        // Filling in tree with color and drawing it
-        ctx.fillStyle = "#249225";
-        ctx.fill();
+        ctx.beginPath()
+        ctx.moveTo(this.x, this.y)
+        ctx.lineTo(this.y - 150, this.y)
+        ctx.lineTo(this.y-181, this.y - height)
+        ctx.fillStyle = "#249225"
+        ctx.fill()
     }
 }
 
@@ -106,7 +105,7 @@ const x = game.width / 2
 const y = game.height / 5
 // Initialize Skier and Tree (-10 on x to offset width of box)
 let player = new Skier(x - 10, y, "#FF0000", 20, 20)
-let tree = new Tree(600,600)
+let tree = new Tree(randoX, y)
 // Main program, starts game
 function start () { 
     // requestAnimationFrame creates a loop, passing start through it until we tell it to stop
