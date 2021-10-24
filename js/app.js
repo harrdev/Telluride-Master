@@ -17,6 +17,7 @@ console.log("Game width: ", game.width)
 console.log("Game height: ", game.height)
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
+let gameStateActive = true
 
 class Tree {
     constructor(x, y) {
@@ -31,13 +32,11 @@ class Tree {
         ctx.lineTo(150, 300);
         ctx.lineTo(131, 300 - height);
         ctx.closePath();
-    
-        // the outline
+        // The outline of tree
         ctx.lineWidth = 10;
         ctx.strokeStyle = '#249225';
         ctx.stroke();
-    
-        // the fill color
+        // Filling in tree with color and drawing it
         ctx.fillStyle = "#249225";
         ctx.fill();
     }
@@ -100,13 +99,16 @@ class Skier {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
+// Setting x and y coords to place Skier
 const x = game.width / 2
 // Divided by 5 to be set at top mid of screen
 const y = game.height / 5
+// Initialize Skier and Tree
 let player = new Skier(x, y, "#FF0000", 20, 20)
 let tree = new Tree(600,600)
-function start () {
-    // requestAnimationFrame creates a loop, passing animate through it until we tell it to stop
+// Main program, starts game
+function start () { 
+    // requestAnimationFrame creates a loop, passing start through it until we tell it to stop
     requestAnimationFrame(start)
     ctx.clearRect(0, 0, game.width, game.height)
     player.render()
@@ -114,20 +116,38 @@ function start () {
     tree.draw()
     pad()
     // Need to impliment random triangles below set y-axis
-    //drawTriangle()
 }
+// Actually begins the game, calling start()
 start()
 
-// Functions for player movement
+// Functions for player movement, event listeners for the keys
 document.addEventListener('keydown', (e) => {
     player.setDirection(e.key)
 })
-// this will unset direction
+// this will unset direction, stopping movement
 document.addEventListener('keyup', (e) => {
     if (['w', 'a', 's', 'd'].includes(e.key)) {
         player.unsetDirection(e.key)
     }
 })
+
+// Click event to start!  Add start button, this is useless right now
+addEventListener("click", () => {
+    console.log("Click event")
+})
+
+// create a timer
+let sec = 0
+function pad ( val ) { 
+    return val > 9 ? val : "0" + val
+}
+setInterval( function(){
+    document.getElementById("seconds").innerHTML=pad(++sec%60)
+    document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10))
+}, 1000)
+// stop the timer *** Need to put conditional in to stop this for when player crashes
+
+
 
 // To draw a triangle
 // function drawTriangle() {
@@ -148,20 +168,3 @@ document.addEventListener('keyup', (e) => {
 //     ctx.fillStyle = "#249225";
 //     ctx.fill();
 //   }
-
-// Click event to start!  Add start button
-addEventListener("click", () => {
-    console.log("Click event")
-})
-
-// create a timer
-let sec = 0
-function pad ( val ) { 
-    return val > 9 ? val : "0" + val
-}
-setInterval( function(){
-    document.getElementById("seconds").innerHTML=pad(++sec%60)
-    document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10))
-}, 1000)
-// stop the timer *** Need to put conditional in to stop this for when player crashes
-
