@@ -1,18 +1,20 @@
 // Code out start button event.  Button click will include the start() function
 // Code out score keeper - link to timer
-// Collision detection.  Once crashed, Player2's turn.  Once Player2 crashes, end game and compare score
 
 // Game board variable
 const game = document.getElementById("canvas")
 // Set up height and width for Canvas
 game.width = 600
 game.height = 600
+let moveUp = 8
 console.log("Game width: ", game.width)
 console.log("Game height: ", game.height)
 let playerOneScore = 0
 let playerTwoScore = 0
 let gameFrame = 0
 let gameOver = false
+let speedCounter = 0
+let score = gameFrame
 const keys = []
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
@@ -37,7 +39,7 @@ class Tree {
     constructor() {
         this.x = Math.floor(Math.random() * (game.width - 50))
         this.y = game.height + Math.random() * game.height
-        this.moveY = 8
+        this.moveY = moveUp
         this.width = 40
         this.height = 60
     }
@@ -58,7 +60,7 @@ function handleTrees() {
     // Creates a new Tree and pushes it into the array every 10 frames
     if (gameFrame % 20 === 0) {
         trees.push(new Tree())
-        console.log(trees.length)
+        //console.log(trees.length)
     }
     // Loops through the array: Draws what's in the array and updates animation
     for (let i = 0; i < trees.length; i++) {
@@ -161,6 +163,10 @@ function detectCollision() {
             trees[i].y > player.y + player.height ||
             trees[i].y + trees[i].height < player.y) {
             //console.log("No Collision")
+            if (speedCounter > 0 && gameFrame % 500 === 0) {
+                moveUp = 8
+                speedCounter = 0
+            }
         } else {
             //console.log("Collision detected")
             gameOver = true
@@ -172,11 +178,15 @@ function detectCollision() {
             speeds[i].y > player.y + player.height ||
             speeds[i].y + speeds[i].height < player.y) {
         } else {
+            moveUp = 16
+            speedCounter++
             console.log("Speed boost hit")
+            }
+            
 
         }
     }
-}
+
 // Initialize skier/player
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
@@ -193,7 +203,8 @@ function start() {
         handleSpeedBoost()
         detectCollision()
         movePlayer()
-        gameFrame++
+        gameFrame = gameFrame + 1
+        console.log(score)
     } else {
         audio.pause()
         // change score
@@ -204,12 +215,10 @@ function start() {
 
 window.addEventListener("keydown", function (e) {
     keys[e.keyCode] = true
-    //console.log(keys)
 })
 window.addEventListener("keyup", function (e) {
     delete keys[e.keyCode]
 })
-
 function movePlayer() {
     if (keys[65] && player.x > 0) {
         player.x -= player.speed
@@ -218,16 +227,6 @@ function movePlayer() {
         player.x += player.speed
     }
 }
-// Functions for player movement, event listeners for the keys
-// document.addEventListener('keydown', (e) => {
-//     player.setDirection(e.key)
-// })
-// // this will unset direction, stopping movement
-// document.addEventListener('keyup', (e) => {
-//     if (['w', 'a', 's', 'd'].includes(e.key)) {
-//         player.unsetDirection(e.key)
-//     }
-// })
 // Click event to start!  Add start button, this starts on mouse click now
 addEventListener("click", () => {
     start()
@@ -237,7 +236,6 @@ addEventListener("click", () => {
         document.getElementById("seconds").innerHTML = pad(++sec % 60)
         document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10))
     }, 1000)
-    console.log("Click event")
 })
 // Updates label to reflect timer
 let sec = 0
