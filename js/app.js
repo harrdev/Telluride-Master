@@ -1,6 +1,4 @@
 // Code out start button event.  Button click will include the start() function
-// Start with fixed objects(trees/players)
-// basic boxes for now
 // Code out score keeper
 // Do I need DOMContent loaded????
 // Trees should scroll up and re-create and keep scrolling
@@ -9,8 +7,8 @@
 // Game board 
 const game = document.getElementById("canvas")
 // Set up height and width for Canvas
-game.width = 1000;
-game.height = 800;
+game.width = 600;
+game.height = 600;
 console.log("Game width: ", game.width)
 console.log("Game height: ", game.height)
 let playerOneScore = 0;
@@ -23,11 +21,11 @@ let gameStateActive = true
 const trees = []
 class Tree {
     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
+    
     constructor() {
         this.x = Math.floor(Math.random() * game.width)
-        this.y = Math.floor(Math.random() * game.height)
-        this.moveX = 1
-        this.moveY = 1
+        this.y = Math.floor(Math.random() * 6000) + 400
+        this.moveY = 6
     }
     // update() moves the y-coordinate to move trees upward
     update() {
@@ -42,9 +40,12 @@ class Tree {
     }
 }
 // drawTrees() is the function to actually draw them and push into the trees array
+// need to store existing location of rectangles
+// Need to do double For Loop to check x and y coords.  If the distance between the 2 are greater than first+width and second, then it won't overlap
 function drawTrees() {
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 100; i++) {
         trees.push(new Tree());
+        //console.log("X coord of tree: ", trees[i].x)
     }
 }
 // calls the function to execute
@@ -54,10 +55,15 @@ function handleTrees() {
     for (let i = 0; i < trees.length; i++) {
         trees[i].update()
         trees[i].draw()
+        // if (trees[i].y < game.height - 700) {
+        //     trees.pop()
+        //     trees.push(new Tree())
+        // }
     }
+    //console.log(trees)
 }
 // console log to test the trees array
-console.log(trees)
+//console.log(trees)
 // creating class of Skier
 class Skier {
     constructor(x, y, color, width, height) {
@@ -68,44 +74,44 @@ class Skier {
         this.height = height
         this.alive = true
         this.direction = {
-            up: false,
-            down: false,
+            //up: false,
+            //down: false,
             right: false,
             left: false
         }
     }
     // Key directions
     setDirection(key) {
-        if (key.toLowerCase() == "w") this.direction.up = true
-        if (key.toLowerCase() == "s") this.direction.down = true
+        //if (key.toLowerCase() == "w") this.direction.up = true
+        //if (key.toLowerCase() == "s") this.direction.down = true
         if (key.toLowerCase() == "a") this.direction.left = true
         if (key.toLowerCase() == "d") this.direction.right = true
     }
     unsetDirection(key) {
-        if (key.toLowerCase() == "w") this.direction.up = false
-        if (key.toLowerCase() == "s") this.direction.down = false
+        //if (key.toLowerCase() == "w") this.direction.up = false
+        //if (key.toLowerCase() == "s") this.direction.down = false
         if (key.toLowerCase() == "a") this.direction.left = false
         if (key.toLowerCase() == "d") this.direction.right = false
     }
     movePlayer() {
         // ***** TAKE OUT DIRECTION UP WHEN DONE, TESTING
         // move up
-        if (this.direction.up) this.y -= 5
-        if (this.y <= 0) {
-            this.y = 0
-        }
+        // if (this.direction.up) this.y -= 4
+        // if (this.y <= 0) {
+        //     this.y = 0
+        // }
         // move left
-        if (this.direction.left) this.x -= 5
+        if (this.direction.left) this.x -= 2
         if (this.x <= 0) {
             this.x = 0
         }
         // move down
-        if (this.direction.down) this.y += 5
-        if (this.y + this.height >= game.height) {
-            this.y = game.height - this.height
-        }
+        // if (this.direction.down) this.y += 4
+        // if (this.y + this.height >= game.height) {
+        //     this.y = game.height - this.height
+        // }
         // move right
-        if (this.direction.right) this.x += 5
+        if (this.direction.right) this.x += 2
         if (this.x + this.width >= game.width) {
             this.x = game.width - this.width
         }
@@ -121,7 +127,7 @@ const x = game.width / 2
 // Divided by 5 to be set at top mid of screen
 const y = game.height / 5
 // Initialize Skier and Tree (-10 on x to offset width of box)
-let player = new Skier(x - 10, y, "#FF0000", 20, 20)
+let player = new Skier(x - 10, y, "#FF0000", 10, 20)
 // Main program, starts game
 function start () { 
     // requestAnimationFrame creates a loop, passing start through it until we tell it to stop
