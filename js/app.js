@@ -33,6 +33,8 @@ const player = {
 const playerSprite = new Image()
 playerSprite.src = "files/skiSprites.png"
 // Array to push in and pop out trees.
+const treeSprite = new Image()
+treeSprite.src = "files/tree.png"
 const trees = []
 class Tree {
     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
@@ -40,8 +42,8 @@ class Tree {
         this.x = Math.floor(Math.random() * (game.width - 50))
         this.y = game.height + Math.random() * game.height
         this.moveY = moveUp
-        this.width = 40
-        this.height = 60
+        this.width = 34
+        this.height = 64
     }
     // update() moves the y-coordinate to move trees upward
     update() {
@@ -49,10 +51,8 @@ class Tree {
     }
     // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to green
     draw() {
-        ctx.beginPath()
-        ctx.rect(this.x, this.y, this.width, this.height)
-        ctx.fillStyle = "#249225"
-        ctx.fill()
+        ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.drawImage(treeSprite, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height)
     }
 }
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
@@ -244,3 +244,47 @@ function pad(val) {
 }
 
 // stop the timer *** Need to put conditional in to stop this for when player crashes
+
+
+
+// const trees = []
+// class Tree {
+//     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
+//     constructor() {
+//         this.x = Math.floor(Math.random() * (game.width - 50))
+//         this.y = game.height + Math.random() * game.height
+//         this.moveY = moveUp
+//         this.width = 40
+//         this.height = 60
+//     }
+//     // update() moves the y-coordinate to move trees upward
+//     update() {
+//         this.y -= this.moveY
+//     }
+//     // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to green
+//     draw() {
+//         ctx.beginPath()
+//         ctx.rect(this.x, this.y, this.width, this.height)
+//         ctx.fillStyle = "#249225"
+//         ctx.fill()
+//     }
+// }
+// // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
+// function handleTrees() {
+//     // Creates a new Tree and pushes it into the array every 10 frames
+//     if (gameFrame % 20 === 0) {
+//         trees.push(new Tree())
+//         //console.log(trees.length)
+//     }
+//     // Loops through the array: Draws what's in the array and updates animation
+//     for (let i = 0; i < trees.length; i++) {
+//         trees[i].update()
+//         trees[i].draw()
+//     }
+//     // Checks to see if a tree has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
+//     for (let i = 0; i < trees.length; i++) {
+//         if (trees[i].y < -40) {
+//             trees.splice(i, 1)
+//         }
+//     }
+// }

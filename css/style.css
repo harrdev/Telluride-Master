@@ -37,10 +37,11 @@ main {
 
 #canvas {
     display: block;
-    background-image: url("../files/Background-Snow.jpeg");
+    /* background-image: url("../files/Background-Snow.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: cover;
+    background-size: cover; */
+    background-color: white;
     margin: 0 auto;
     text-align: center;
     border: 5px solid blue;
