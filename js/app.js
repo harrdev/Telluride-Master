@@ -5,14 +5,14 @@
 // Game board variable
 const game = document.getElementById("canvas")
 // Set up height and width for Canvas
-game.width = 600;
-game.height = 600;
+game.width = 600
+game.height = 600
 console.log("Game width: ", game.width)
 console.log("Game height: ", game.height)
 let playerOneScore = 0
-let playerTwoScore = 0;
+let playerTwoScore = 0
 let gameFrame = 0
-let gameOver = false;
+let gameOver = false
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
 const audio = new Audio("files/gameMusic.wav")
@@ -35,7 +35,7 @@ class Tree {
     // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to green
     draw() {
         ctx.beginPath()
-        ctx.rect(this.x, this.y, 40, 60)
+        ctx.rect(this.x, this.y, this.width, this.height)
         ctx.fillStyle = "#249225"
         ctx.fill()
     }
@@ -43,7 +43,7 @@ class Tree {
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
     // Creates a new Tree and pushes it into the array every 10 frames
-    if (gameFrame % 100 === 0) {
+    if (gameFrame % 20 === 0) {
         trees.push(new Tree())
         console.log(trees.length)
     }
@@ -56,6 +56,48 @@ function handleTrees() {
     for (let i = 0; i < trees.length; i++) {
         if (trees[i].y < -40) {
             trees.splice(i, 1)
+        }
+    }
+}
+// Speed Boost
+let speeds = []
+class  SpeedBoost {
+    // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
+    constructor() {
+        this.x = Math.floor(Math.random() * (game.width - 50))
+        this.y = game.height + Math.random() * game.height
+        this.moveY = 8
+        this.width = 50
+        this.height = 15
+    }
+    // update() moves the y-coordinate to move trees upward
+    update() {
+        this.y -= this.moveY
+    }
+    // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to green
+    draw() {
+        ctx.beginPath()
+        ctx.rect(this.x, this.y, this.width, this.height)
+        ctx.fillStyle = "#OOOOFF"
+        ctx.fill()
+    }
+}
+// handleTrees takes in the trees array and cycles through all that are in the array to move and draw
+function handleSpeedBoost() {
+    // Creates a new Tree and pushes it into the array every 10 frames
+    if (gameFrame % 80=== 0) {
+        speeds.push(new SpeedBoost())
+        //console.log(speeds.length)
+    }
+    // Loops through the array: Draws what's in the array and updates animation
+    for (let i = 0; i < speeds.length; i++) {
+        speeds[i].update()
+        speeds[i].draw()
+    }
+    // Checks to see if a tree has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
+    for (let i = 0; i < speeds.length; i++) {
+        if (speeds[i].y < -40) {
+            speeds.splice(i, 1)
         }
     }
 }
@@ -83,11 +125,11 @@ class Skier {
         if (key.toLowerCase() == "d") this.direction.right = false
     }
     movePlayer() {
-        if (this.direction.left) this.x -= 5
+        if (this.direction.left) this.x -= 3
         if (this.x <= 0) {
             this.x = 0
         }
-        if (this.direction.right) this.x += 5
+        if (this.direction.right) this.x += 3
         if (this.x + this.width >= game.width) {
             this.x = game.width - this.width
         }
@@ -106,9 +148,9 @@ function detectCollision() {
             trees[i].y > player.y + player.height ||
             trees[i].y + trees[i].height < player.y) {
             console.log("No Collision")
-            gameOver = true;
         } else {
             console.log("Collision detected")
+            gameOver = true
         }
     }
 }
@@ -121,14 +163,22 @@ let player = new Skier(x - 10, y, "#FF0000", 10, 20)
 // Main program, starts game
 function start() {
     // requestAnimationFrame creates a loop, passing start through it until we tell it to stop
-    requestAnimationFrame(start)
-    ctx.clearRect(0, 0, game.width, game.height)
-    player.render()
-    player.movePlayer()
-    audio.play()
-    handleTrees()
-    detectCollision()
-    gameFrame++
+    if (gameOver === false) { 
+        requestAnimationFrame(start)
+        ctx.clearRect(0, 0, game.width, game.height)
+        player.render()
+        player.movePlayer()
+        audio.play()
+        handleTrees()
+        handleSpeedBoost()
+        detectCollision()
+        gameFrame++
+    } else {
+        audio.pause()
+        // change score
+        // add message for gameOver
+    }
+    
 }
 // Functions for player movement, event listeners for the keys
 document.addEventListener('keydown', (e) => {
