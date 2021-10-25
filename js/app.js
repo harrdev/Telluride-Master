@@ -1,10 +1,8 @@
 // Code out start button event.  Button click will include the start() function
-// Code out score keeper
-// Do I need DOMContent loaded????
-// Trees should scroll up and re-create and keep scrolling
-// Once trees are working and loaded and moving up, remove Skier down movement and up movement.  Skier should only be able to move left and right
+// Code out score keeper - link to timer
+// Collision detection.  Once crashed, Player2's turn.  Once Player2 crashes, end game and compare score
 
-// Game board 
+// Game board variable
 const game = document.getElementById("canvas")
 // Set up height and width for Canvas
 game.width = 600;
@@ -13,6 +11,7 @@ console.log("Game width: ", game.width)
 console.log("Game height: ", game.height)
 let playerOneScore = 0;
 let playerTwoScore = 0;
+let gameFrame = 0;
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
 const audio = new Audio("files/gameMusic.wav")
@@ -21,11 +20,10 @@ let gameStateActive = true
 const trees = []
 class Tree {
     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
-    
     constructor() {
-        this.x = Math.floor(Math.random() * game.width)
-        this.y = Math.floor(Math.random() * 6000) + 400
-        this.moveY = 6
+        this.x = Math.floor(Math.random() * (game.width - 50))
+        this.y = game.height + Math.random() * game.height
+        this.moveY = 8
     }
     // update() moves the y-coordinate to move trees upward
     update() {
@@ -39,31 +37,25 @@ class Tree {
         ctx.fill()
     }
 }
-// drawTrees() is the function to actually draw them and push into the trees array
-// need to store existing location of rectangles
-// Need to do double For Loop to check x and y coords.  If the distance between the 2 are greater than first+width and second, then it won't overlap
-function drawTrees() {
-    for (let i = 0; i < 100; i++) {
-        trees.push(new Tree());
-        //console.log("X coord of tree: ", trees[i].x)
-    }
-}
-// calls the function to execute
-drawTrees()
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
+    // Creates a new Tree and pushes it into the array every 10 frames
+    if (gameFrame % 10 === 0) {
+        trees.push(new Tree())
+        console.log(trees.length)
+    }
+    // Loops through the array: Draws what's in the array and updates animation
     for (let i = 0; i < trees.length; i++) {
         trees[i].update()
         trees[i].draw()
-        // if (trees[i].y < game.height - 700) {
-        //     trees.pop()
-        //     trees.push(new Tree())
-        // }
     }
-    //console.log(trees)
+    // Checks to see if a tree has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
+    for (let i = 0; i < trees.length; i++) {
+        if (trees[i].y < -40) {
+            trees.splice(i, 1)
+        }
+    }
 }
-// console log to test the trees array
-//console.log(trees)
 // creating class of Skier
 class Skier {
     constructor(x, y, color, width, height) {
@@ -137,6 +129,7 @@ function start () {
     player.movePlayer()
     audio.play()
     handleTrees()
+    gameFrame++
 }
 // Functions for player movement, event listeners for the keys
 document.addEventListener('keydown', (e) => {
@@ -148,7 +141,6 @@ document.addEventListener('keyup', (e) => {
         player.unsetDirection(e.key)
     }
 })
-
 // Click event to start!  Add start button, this starts on mouse click now
 addEventListener("click", () => {
     start()
@@ -160,7 +152,6 @@ addEventListener("click", () => {
     }, 1000)
     console.log("Click event")
 })
-
 // Updates label to reflect timer
 let sec = 0
 function pad ( val ) { 
