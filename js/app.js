@@ -13,10 +13,23 @@ let playerOneScore = 0
 let playerTwoScore = 0
 let gameFrame = 0
 let gameOver = false
+const keys = []
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
 const audio = new Audio("files/gameMusic.wav")
 let gameStateActive = true
+// Sprites class
+const player = {
+    x: game.width / 2,
+    y: game.height / 5,
+    width: 19,
+    height: 34,
+    frameX: 0,
+    frameY: 0,
+    speed: 3
+}
+const playerSprite = new Image()
+playerSprite.src = "files/skiSprites.png"
 // Array to push in and pop out trees.
 const trees = []
 class Tree {
@@ -102,44 +115,44 @@ function handleSpeedBoost() {
     }
 }
 // creating class of Skier
-class Skier {
-    constructor(x, y, color, width, height) {
-        this.x = x
-        this.y = y
-        this.color = color
-        this.width = width
-        this.height = height
-        this.alive = true
-        this.direction = {
-            right: false,
-            left: false
-        }
-    }
-    // Key directions
-    setDirection(key) {
-        if (key.toLowerCase() == "a") this.direction.left = true
-        if (key.toLowerCase() == "d") this.direction.right = true
-    }
-    unsetDirection(key) {
-        if (key.toLowerCase() == "a") this.direction.left = false
-        if (key.toLowerCase() == "d") this.direction.right = false
-    }
-    movePlayer() {
-        if (this.direction.left) this.x -= 3
-        if (this.x <= 0) {
-            this.x = 0
-        }
-        if (this.direction.right) this.x += 3
-        if (this.x + this.width >= game.width) {
-            this.x = game.width - this.width
-        }
+// class Skier {
+//     constructor(x, y, color, width, height) {
+//         this.x = x
+//         this.y = y
+//         this.color = color
+//         this.width = width
+//         this.height = height
+//         this.alive = true
+//         this.direction = {
+//             right: false,
+//             left: false
+//         }
+//     }
+//     // Key directions
+//     setDirection(key) {
+//         if (key.toLowerCase() == "a") this.direction.left = true
+//         if (key.toLowerCase() == "d") this.direction.right = true
+//     }
+//     unsetDirection(key) {
+//         if (key.toLowerCase() == "a") this.direction.left = false
+//         if (key.toLowerCase() == "d") this.direction.right = false
+//     }
+//     movePlayer() {
+//         if (this.direction.left) this.x -= 3
+//         if (this.x <= 0) {
+//             this.x = 0
+//         }
+//         if (this.direction.right) this.x += 3
+//         if (this.x + this.width >= game.width) {
+//             this.x = game.width - this.width
+//         }
 
-    }
-    render = function () {
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-    }
-}
+//     }
+//     render = function () {
+//         ctx.fillStyle = this.color
+//         ctx.fillRect(this.x, this.y, this.width, this.height)
+//     }
+// }
 // Collision detection
 function detectCollision() {
     for (let i = 0; i < trees.length; i++) {
@@ -147,9 +160,9 @@ function detectCollision() {
             trees[i].x + trees[i].width < player.x ||
             trees[i].y > player.y + player.height ||
             trees[i].y + trees[i].height < player.y) {
-            console.log("No Collision")
+            //console.log("No Collision")
         } else {
-            console.log("Collision detected")
+            //console.log("Collision detected")
             gameOver = true
         }
     }
@@ -159,19 +172,24 @@ const x = game.width / 2
 // Divided by 5 to be set at top mid of screen
 const y = game.height / 5
 // Initialize Skier and Tree (-10 on x to offset width of box)
-let player = new Skier(x - 10, y, "#FF0000", 10, 20)
+//let player = new Skier(x - 10, y, "#FF0000", 10, 20)
+function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
+    ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
+}
 // Main program, starts game
 function start() {
     // requestAnimationFrame creates a loop, passing start through it until we tell it to stop
     if (gameOver === false) { 
         requestAnimationFrame(start)
         ctx.clearRect(0, 0, game.width, game.height)
-        player.render()
-        player.movePlayer()
+        // player.render()
+        // player.movePlayer()
+        drawSprite(playerSprite, 65, 0, player.width, player.height, player.x, player.y, player.width *1.5, player.height *1.5)
         audio.play()
         handleTrees()
         handleSpeedBoost()
         detectCollision()
+        movePlayer()
         gameFrame++
     } else {
         audio.pause()
@@ -180,16 +198,33 @@ function start() {
     }
     
 }
-// Functions for player movement, event listeners for the keys
-document.addEventListener('keydown', (e) => {
-    player.setDirection(e.key)
+
+window.addEventListener("keydown", function(e) {
+    keys[e.keyCode] = true
+    //console.log(keys)
 })
-// this will unset direction, stopping movement
-document.addEventListener('keyup', (e) => {
-    if (['w', 'a', 's', 'd'].includes(e.key)) {
-        player.unsetDirection(e.key)
+window.addEventListener("keyup", function(e) {
+    delete keys[e.keyCode]
+})
+
+function movePlayer() {
+    if (keys[65] && player.x > 0) {
+        player.x -= player.speed
     }
-})
+    if (keys[68] && player.x > 0) {
+        player.x += player.speed
+    }
+}
+// Functions for player movement, event listeners for the keys
+// document.addEventListener('keydown', (e) => {
+//     player.setDirection(e.key)
+// })
+// // this will unset direction, stopping movement
+// document.addEventListener('keyup', (e) => {
+//     if (['w', 'a', 's', 'd'].includes(e.key)) {
+//         player.unsetDirection(e.key)
+//     }
+// })
 // Click event to start!  Add start button, this starts on mouse click now
 addEventListener("click", () => {
     start()
