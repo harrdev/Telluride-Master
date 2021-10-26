@@ -27,6 +27,7 @@ h1 {
     border: 5px solid blue;
     text-align: center;
 }
+
 #container {
     max-width: 75em;
     margin: 200px auto;

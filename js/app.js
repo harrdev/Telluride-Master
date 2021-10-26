@@ -15,6 +15,7 @@ let gameFrame = 0
 let gameOver = false
 let speedCounter = 0
 let score = 0
+let highScore = 0
 const keys = []
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
@@ -35,7 +36,7 @@ playerSprite.src = "files/skiSprites.png"
 // Array to push in and pop out trees.
 const treeSprite = new Image()
 treeSprite.src = "files/ptree.png"
-const trees = []
+let trees = []
 class Tree {
     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
     constructor() {
@@ -204,15 +205,24 @@ function start() {
         gameFrame = gameFrame + 1
         score = Math.floor(gameFrame / 60 * 10)
         points.textContent = score
-        console.log(score)
+        console.log("Score: ", score)
     } else { 
         endGame()
     }
 }
 
 const endGame = () => {
+    gameOver = false
     audio.pause()
     document.getElementById("start").style.display = "block"
+    trees = []
+    moveUp = 8
+    if (score > highScore) {
+        highScore = score
+        document.getElementById("high").innerHTML = highScore
+    }
+    score = 0
+    gameFrame = 0
 }
 
 window.addEventListener("keydown", function (e) {
