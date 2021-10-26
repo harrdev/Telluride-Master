@@ -21,12 +21,15 @@ h1 {
 }
 
 .gameInfo {
-    margin-bottom: 50px;
-    background-color: yellow;
+    margin: 0 auto;
+    background-color: #87CEEB;
+    width: 600px;
+    border: 5px solid blue;
+    text-align: center;
 }
 #container {
     max-width: 75em;
-    margin: 0 auto;
+    margin: 200px auto;
     padding: 0;
 }
     
@@ -47,12 +50,12 @@ main {
     border: 5px solid blue;
 }
 
-#timer {
-    height: 50px;
-    width: 200px;
-    background-color: blue;
-    text-align: center;
-    font-size: 40px;
-    left: 27%;
+#start {
     position: absolute;
+    display: block;
+    height: 60px;
+    width: 80px;
+    left: 48%;
+    top: 48%;
+    background-color: orange;
 }

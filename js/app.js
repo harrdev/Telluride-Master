@@ -14,7 +14,7 @@ let playerTwoScore = 0
 let gameFrame = 0
 let gameOver = false
 let speedCounter = 0
-let score = gameFrame
+let score = 0
 const keys = []
 // Get game's context, use Canvas method getContext
 const ctx = game.getContext("2d")
@@ -28,13 +28,13 @@ const player = {
     height: 34,
     frameX: 0,
     frameY: 0,
-    speed: 3
+    speed: 2
 }
 const playerSprite = new Image()
 playerSprite.src = "files/skiSprites.png"
 // Array to push in and pop out trees.
 const treeSprite = new Image()
-treeSprite.src = "files/tree.png"
+treeSprite.src = "files/ptree.png"
 const trees = []
 class Tree {
     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
@@ -52,13 +52,13 @@ class Tree {
     // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to green
     draw() {
         ctx.fillRect(this.x, this.y, this.width, this.height)
-        ctx.drawImage(treeSprite, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height)
+        ctx.drawImage(treeSprite, 0, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
     }
 }
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
     // Creates a new Tree and pushes it into the array every 10 frames
-    if (gameFrame % 20 === 0) {
+    if (gameFrame % 15 === 0) {
         trees.push(new Tree())
         //console.log(trees.length)
     }
@@ -69,7 +69,7 @@ function handleTrees() {
     }
     // Checks to see if a tree has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
     for (let i = 0; i < trees.length; i++) {
-        if (trees[i].y < -40) {
+        if (trees[i].y < -60) {
             trees.splice(i, 1)
         }
     }
@@ -181,11 +181,9 @@ function detectCollision() {
             moveUp = 16
             speedCounter++
             console.log("Speed boost hit")
-            }
-            
-
         }
     }
+}
 
 // Initialize skier/player
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
@@ -204,13 +202,17 @@ function start() {
         detectCollision()
         movePlayer()
         gameFrame = gameFrame + 1
+        score = Math.floor(gameFrame / 60 * 10)
+        points.textContent = score
         console.log(score)
-    } else {
-        audio.pause()
-        // change score
-        // add message for gameOver
+    } else { 
+        endGame()
     }
+}
 
+const endGame = () => {
+    audio.pause()
+    document.getElementById("start").style.display = "block"
 }
 
 window.addEventListener("keydown", function (e) {
@@ -228,63 +230,13 @@ function movePlayer() {
     }
 }
 // Click event to start!  Add start button, this starts on mouse click now
-addEventListener("click", () => {
+document.getElementById("start").addEventListener("click", () => {
+    document.getElementById("start").style.display = "none"
     start()
-    pad()
-    // Timer starts when mouse clicked and game starts
-    setInterval(function () {
-        document.getElementById("seconds").innerHTML = pad(++sec % 60)
-        document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10))
-    }, 1000)
 })
-// Updates label to reflect timer
-let sec = 0
-function pad(val) {
-    return val > 9 ? val : "0" + val
-}
 
-// stop the timer *** Need to put conditional in to stop this for when player crashes
-
-
-
-// const trees = []
-// class Tree {
-//     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
-//     constructor() {
-//         this.x = Math.floor(Math.random() * (game.width - 50))
-//         this.y = game.height + Math.random() * game.height
-//         this.moveY = moveUp
-//         this.width = 40
-//         this.height = 60
-//     }
-//     // update() moves the y-coordinate to move trees upward
-//     update() {
-//         this.y -= this.moveY
-//     }
-//     // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to green
-//     draw() {
-//         ctx.beginPath()
-//         ctx.rect(this.x, this.y, this.width, this.height)
-//         ctx.fillStyle = "#249225"
-//         ctx.fill()
-//     }
-// }
-// // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
-// function handleTrees() {
-//     // Creates a new Tree and pushes it into the array every 10 frames
-//     if (gameFrame % 20 === 0) {
-//         trees.push(new Tree())
-//         //console.log(trees.length)
-//     }
-//     // Loops through the array: Draws what's in the array and updates animation
-//     for (let i = 0; i < trees.length; i++) {
-//         trees[i].update()
-//         trees[i].draw()
-//     }
-//     // Checks to see if a tree has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
-//     for (let i = 0; i < trees.length; i++) {
-//         if (trees[i].y < -40) {
-//             trees.splice(i, 1)
-//         }
-//     }
-// }
+// Condition to check if trees are touching, not working
+// if (trees[i].x > trees[j].x + trees[j].width ||
+//     trees[i].x + trees[i].width < trees[j].x ||
+//     trees[i].y > trees[j].y + trees[j].height ||
+//     trees[i].y + trees[i].height < trees[j].y)
