@@ -21,12 +21,16 @@ h1 {
 }
 
 .gameInfo {
-    margin-bottom: 50px;
-    background-color: yellow;
+    margin: 0 auto;
+    background-color: #87CEEB;
+    width: 600px;
+    border: 5px solid blue;
+    text-align: center;
 }
+
 #container {
     max-width: 75em;
-    margin: 0 auto;
+    margin: 200px auto;
     padding: 0;
 }
     
@@ -37,21 +41,35 @@ main {
 
 #canvas {
     display: block;
-    background-image: url("../files/Background-Snow.jpeg");
+    /* background-image: url("../files/Background-Snow.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: cover;
+    background-size: cover; */
+    background-color: white;
     margin: 0 auto;
     text-align: center;
     border: 5px solid blue;
 }
 
-#timer {
-    height: 50px;
-    width: 200px;
-    background-color: blue;
-    text-align: center;
-    font-size: 40px;
-    left: 27%;
+#start {
     position: absolute;
+    display: block;
+    height: 60px;
+    width: 80px;
+    left: 47%;
+    top: 41%;
+    background-color: orange;
+}
+
+#message {
+    position: absolute;
+    display: block;
+    left: 42%;
+    top: 45%;
+    height: 100px;
+    width: 200px;
+    color: red;
+    text-align: center;
+    line-height: 100px;
+    font-size: 36px;
 }
