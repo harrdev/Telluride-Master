@@ -44,7 +44,7 @@ let trees = []
 class Tree {
     constructor() {
         this.x = Math.floor(Math.random() * (game.width - 50))
-        this.y = game.height 
+        this.y = game.height
         this.moveY = 8
         this.width = 34
         this.height = 64
@@ -123,6 +123,17 @@ function detectCollision() {
             trees[i].y > player.y + player.height ||
             trees[i].y + trees[i].height < player.y) {
             //console.log("No Collision")
+        } else {
+            //console.log("Collision detected")
+            gameOver = true
+        }
+    }
+    for (let i = 0; i < jump.length; i++) {
+        if (jump[i].x > player.x + player.width ||
+            jump[i].x + jump[i].width < player.x ||
+            jump[i].y > player.y + player.height ||
+            jump[i].y + jump[i].height < player.y) {
+            // If collision with jump ramp happens, run this while no collision with trees is happening
             if (jumpCounter > 0 && gameFrame % 20 === 0) {
                 jumping = false
                 jumpCounter = 0
@@ -134,17 +145,7 @@ function detectCollision() {
                 message.innerText = ""
             }
         } else {
-            //console.log("Collision detected")
-            gameOver = true
-        }
-    }
-    for (let i = 0; i < jump.length; i++) {
-        if (jump[i].x > player.x + player.width ||
-            jump[i].x + jump[i].width < player.x ||
-            jump[i].y > player.y + player.height ||
-            jump[i].y + jump[i].height < player.y) {
-        } else {
-            player.sX = 65
+            // Collision happening
             jumpCounter++
             message.style.display = "block"
             message.innerText = "\n25 Style points added!"
@@ -182,13 +183,14 @@ const endGame = () => {
     audio.currentTime = 0.0
     startButton.style.display = "block"
     trees = []
+    jump = []
     moveUp = 8
     if (score > highScore) {
         highScore = score
         message.style.display = "block"
         message.innerText = "You beat the high score!"
         document.getElementById("high").innerHTML = highScore
-    } else { 
+    } else {
         message.style.display = "block"
         message.innerText = "Try again!"
     }
@@ -206,11 +208,11 @@ window.addEventListener("keyup", function (e) {
     player.sX = 65
 })
 function movePlayer() {
-    if (keys[65] && player.x > 0) {
+    if (keys[65] && player.x > 0 && jumping === false) {
         player.x -= player.speed
         player.sX = 26
     }
-    if (keys[68] && player.x < game.width - player.width - 5) {
+    if (keys[68] && player.x < game.width - player.width - 5 && jumping === false) {
         player.x += player.speed
         player.sX = 46
     }
