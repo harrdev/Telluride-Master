@@ -2,11 +2,12 @@
 const game = document.getElementById("canvas")
 const ctx = game.getContext("2d")
 const style = document.getElementById("style")
+const message = document.getElementById("message")
+const startButton = document.getElementById("start")
 game.width = 600
 game.height = 600
 console.log(game.width)
 console.log(game.height)
-let moveUp = 8
 let playerOneScore = 0
 let playerTwoScore = 0
 let gameFrame = 0
@@ -15,6 +16,7 @@ let jumpCounter = 0
 let score = 0
 let highScore = 0
 let stylePoints = 0
+let jumping = false
 const keys = []
 const audio = new Audio("files/gameMusic.wav")
 let gameStateActive = true
@@ -43,7 +45,7 @@ class Tree {
     constructor() {
         this.x = Math.floor(Math.random() * (game.width - 50))
         this.y = game.height 
-        this.moveY = moveUp
+        this.moveY = 8
         this.width = 34
         this.height = 64
     }
@@ -60,7 +62,7 @@ class Tree {
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
     // Creates a new Tree and pushes it into the array every 10 frames
-    if (gameFrame % 15 === 0) {
+    if (gameFrame % 12 === 0) {
         trees.push(new Tree())
         //console.log(trees.length)
     }
@@ -85,7 +87,7 @@ class JumpBonus {
         this.y = game.height + Math.random() * game.height
         this.moveY = 8
         this.width = 50
-        this.height = 15
+        this.height = 8
     }
     // update() moves the y-coordinate to move trees upward
     update() {
@@ -100,7 +102,7 @@ class JumpBonus {
     }
 }
 function handleSpeedBoost() {
-    if (gameFrame % 80 === 0) {
+    if (gameFrame % 160 === 0) {
         jump.push(new JumpBonus())
     }
     for (let i = 0; i < jump.length; i++) {
@@ -122,12 +124,14 @@ function detectCollision() {
             trees[i].y + trees[i].height < player.y) {
             //console.log("No Collision")
             if (jumpCounter > 0 && gameFrame % 20 === 0) {
-                moveUp = 8
+                jumping = false
                 jumpCounter = 0
                 player.width = 19
                 player.sX = 65
                 stylePoints += 25
-                style.innerText = ""
+            }
+            if (gameFrame % 200 === 0) {
+                message.innerText = ""
             }
         } else {
             //console.log("Collision detected")
@@ -140,13 +144,17 @@ function detectCollision() {
             jump[i].y > player.y + player.height ||
             jump[i].y + jump[i].height < player.y) {
         } else {
+            player.sX = 65
             jumpCounter++
-            style.innerText = "\nStyle points added!"
+            message.style.display = "block"
+            message.innerText = "\n25 Style points added!"
             player.sX = 83
             player.width = 36
+            jumping = true
         }
     }
 }
+
 
 // Main program, starts game
 function start() {
@@ -172,19 +180,26 @@ const endGame = () => {
     gameOver = false
     audio.pause()
     audio.currentTime = 0.0
-    document.getElementById("start").style.display = "block"
+    startButton.style.display = "block"
     trees = []
     moveUp = 8
     if (score > highScore) {
         highScore = score
+        message.style.display = "block"
+        message.innerText = "You beat the high score!"
         document.getElementById("high").innerHTML = highScore
+    } else { 
+        message.style.display = "block"
+        message.innerText = "Try again!"
     }
     score = 0
     gameFrame = 0
 }
 
 window.addEventListener("keydown", function (e) {
-    keys[e.keyCode] = true
+    if (jumping === false) {
+        keys[e.keyCode] = true
+    }
 })
 window.addEventListener("keyup", function (e) {
     delete keys[e.keyCode]
@@ -202,7 +217,8 @@ function movePlayer() {
 }
 // Clicking on Start button starts the game
 document.getElementById("start").addEventListener("click", () => {
-    document.getElementById("start").style.display = "none"
+    startButton.style.display = "none"
+    message.style.display = "none"
     player.x = game.width / 2
     player.y = game.height / 5
     start()

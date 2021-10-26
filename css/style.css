@@ -56,7 +56,20 @@ main {
     display: block;
     height: 60px;
     width: 80px;
-    left: 48%;
-    top: 48%;
+    left: 47%;
+    top: 41%;
     background-color: orange;
+}
+
+#message {
+    position: absolute;
+    display: block;
+    left: 42%;
+    top: 45%;
+    height: 100px;
+    width: 200px;
+    color: red;
+    text-align: center;
+    line-height: 100px;
+    font-size: 36px;
 }
