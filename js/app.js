@@ -3,6 +3,8 @@ const game = document.getElementById("canvas")
 const ctx = game.getContext("2d")
 game.width = 600
 game.height = 600
+console.log(game.width)
+console.log(game.height)
 let moveUp = 8
 let playerOneScore = 0
 let playerTwoScore = 0
@@ -21,12 +23,12 @@ const player = {
     y: game.height / 5,
     width: 19,
     height: 34,
-    frameX: 0,
-    frameY: 0,
+    sX: 65,
+    sY: 0,
     speed: 2
 }
 const playerSprite = new Image()
-playerSprite.src = "files/skiSprites.png"
+playerSprite.src = "files/skiSpritesFixed.png"
 // Initialize skier/player
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
@@ -38,7 +40,7 @@ let trees = []
 class Tree {
     constructor() {
         this.x = Math.floor(Math.random() * (game.width - 50))
-        this.y = game.height + Math.random() * game.height
+        this.y = game.height 
         this.moveY = moveUp
         this.width = 34
         this.height = 64
@@ -52,6 +54,10 @@ class Tree {
         ctx.drawImage(treeSprite, 0, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
     }
 }
+// Tree collision
+// check current tree in array vs previous array tree and compare
+// store "good" tree in new array or slice out
+
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
     // Creates a new Tree and pushes it into the array every 10 frames
@@ -143,16 +149,16 @@ function start() {
     if (gameOver === false) {
         requestAnimationFrame(start)
         ctx.clearRect(0, 0, game.width, game.height)
-        drawSprite(playerSprite, 65, 0, player.width, player.height, player.x, player.y, player.width * 1.5, player.height * 1.5)
+        drawSprite(playerSprite, player.sX, player.sY, player.width, player.height, player.x, player.y, player.width * 1.5, player.height * 1.5)
         audio.play()
         handleTrees()
         handleSpeedBoost()
         detectCollision()
         movePlayer()
+        console.log(trees)
         gameFrame = gameFrame + 1
         score = Math.floor(gameFrame / 60 * 10)
         points.textContent = score
-        console.log("Score: ", score)
     } else {
         endGame()
     }
@@ -161,6 +167,7 @@ function start() {
 const endGame = () => {
     gameOver = false
     audio.pause()
+    audio.currentTime = 0.0
     document.getElementById("start").style.display = "block"
     trees = []
     moveUp = 8
@@ -177,13 +184,16 @@ window.addEventListener("keydown", function (e) {
 })
 window.addEventListener("keyup", function (e) {
     delete keys[e.keyCode]
+    player.sX = 65
 })
 function movePlayer() {
     if (keys[65] && player.x > 0) {
         player.x -= player.speed
+        player.sX = 26
     }
     if (keys[68] && player.x < game.width - player.width - 5) {
         player.x += player.speed
+        player.sX = 46
     }
 }
 // Clicking on button starts the game
