@@ -6,8 +6,6 @@ const message = document.getElementById("message")
 const startButton = document.getElementById("start")
 game.width = 600
 game.height = 600
-console.log(game.width)
-console.log(game.height)
 let playerOneScore = 0
 let playerTwoScore = 0
 let gameFrame = 0
@@ -76,7 +74,7 @@ function handleTrees() {
         }
     }
 }
-//<-----------------------------------Speed Boost Section----------------------------------->
+//<-----------------------------------Jump Bonus Section----------------------------------->
 let jump = []
 class JumpBonus {
     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
