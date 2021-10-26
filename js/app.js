@@ -1,4 +1,4 @@
-// Game variables
+//<-------------------------------------Global Variables------------------------------------->
 const game = document.getElementById("canvas")
 const ctx = game.getContext("2d")
 const style = document.getElementById("style")
@@ -20,8 +20,7 @@ let jumping = false
 const keys = []
 const audio = new Audio("files/gameMusic.wav")
 let gameStateActive = true
-
-// Player sprite class
+//<-----------------------------------Player/Skier Section----------------------------------->
 const player = {
     x: game.width / 2,
     y: game.height / 5,
@@ -37,7 +36,7 @@ playerSprite.src = "files/skiSpritesFixed.png"
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
 }
-// Trees section
+//<------------------------------------Tree Object Section------------------------------------>
 const treeSprite = new Image()
 treeSprite.src = "files/ptree.png"
 let trees = []
@@ -58,7 +57,6 @@ class Tree {
         ctx.drawImage(treeSprite, 0, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
     }
 }
-// Tree collision
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
     // Creates a new Tree and pushes it into the array every 10 frames
@@ -78,7 +76,7 @@ function handleTrees() {
         }
     }
 }
-// Speed Boost section
+//<-----------------------------------Speed Boost Section----------------------------------->
 let jump = []
 class JumpBonus {
     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
@@ -115,7 +113,7 @@ function handleSpeedBoost() {
         }
     }
 }
-// Collision detection
+//<------------------------------------Collision Detection------------------------------------>
 function detectCollision() {
     for (let i = 0; i < trees.length; i++) {
         if (trees[i].x > player.x + player.width ||
@@ -155,9 +153,7 @@ function detectCollision() {
         }
     }
 }
-
-
-// Main program, starts game
+//<-----------------------------------------Game Loop----------------------------------------->
 function start() {
     if (gameOver === false) {
         requestAnimationFrame(start)
@@ -175,7 +171,7 @@ function start() {
         endGame()
     }
 }
-
+//<------------------------------------End Game function------------------------------------>
 const endGame = () => {
     stylePoints = 0
     gameOver = false
@@ -197,7 +193,7 @@ const endGame = () => {
     score = 0
     gameFrame = 0
 }
-
+//<-------------------------------Keys event / movement function------------------------------->
 window.addEventListener("keydown", function (e) {
     if (jumping === false) {
         keys[e.keyCode] = true
@@ -217,7 +213,7 @@ function movePlayer() {
         player.sX = 46
     }
 }
-// Clicking on Start button starts the game
+//<--------------------------------Start button event listener-------------------------------->
 document.getElementById("start").addEventListener("click", () => {
     startButton.style.display = "none"
     message.style.display = "none"
