@@ -1,6 +1,7 @@
 // Game variables
 const game = document.getElementById("canvas")
 const ctx = game.getContext("2d")
+const style = document.getElementById("style")
 game.width = 600
 game.height = 600
 console.log(game.width)
@@ -10,9 +11,10 @@ let playerOneScore = 0
 let playerTwoScore = 0
 let gameFrame = 0
 let gameOver = false
-let speedCounter = 0
+let jumpCounter = 0
 let score = 0
 let highScore = 0
+let stylePoints = 0
 const keys = []
 const audio = new Audio("files/gameMusic.wav")
 let gameStateActive = true
@@ -55,9 +57,6 @@ class Tree {
     }
 }
 // Tree collision
-// check current tree in array vs previous array tree and compare
-// store "good" tree in new array or slice out
-
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
     // Creates a new Tree and pushes it into the array every 10 frames
@@ -78,8 +77,8 @@ function handleTrees() {
     }
 }
 // Speed Boost section
-let speeds = []
-class SpeedBoost {
+let jump = []
+class JumpBonus {
     // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
     constructor() {
         this.x = Math.floor(Math.random() * (game.width - 50))
@@ -102,15 +101,15 @@ class SpeedBoost {
 }
 function handleSpeedBoost() {
     if (gameFrame % 80 === 0) {
-        speeds.push(new SpeedBoost())
+        jump.push(new JumpBonus())
     }
-    for (let i = 0; i < speeds.length; i++) {
-        speeds[i].update()
-        speeds[i].draw()
+    for (let i = 0; i < jump.length; i++) {
+        jump[i].update()
+        jump[i].draw()
     }
-    for (let i = 0; i < speeds.length; i++) {
-        if (speeds[i].y < -40) {
-            speeds.splice(i, 1)
+    for (let i = 0; i < jump.length; i++) {
+        if (jump[i].y < -40) {
+            jump.splice(i, 1)
         }
     }
 }
@@ -122,24 +121,29 @@ function detectCollision() {
             trees[i].y > player.y + player.height ||
             trees[i].y + trees[i].height < player.y) {
             //console.log("No Collision")
-            if (speedCounter > 0 && gameFrame % 500 === 0) {
+            if (jumpCounter > 0 && gameFrame % 20 === 0) {
                 moveUp = 8
-                speedCounter = 0
+                jumpCounter = 0
+                player.width = 19
+                player.sX = 65
+                stylePoints += 25
+                style.innerText = ""
             }
         } else {
             //console.log("Collision detected")
             gameOver = true
         }
     }
-    for (let i = 0; i < speeds.length; i++) {
-        if (speeds[i].x > player.x + player.width ||
-            speeds[i].x + speeds[i].width < player.x ||
-            speeds[i].y > player.y + player.height ||
-            speeds[i].y + speeds[i].height < player.y) {
+    for (let i = 0; i < jump.length; i++) {
+        if (jump[i].x > player.x + player.width ||
+            jump[i].x + jump[i].width < player.x ||
+            jump[i].y > player.y + player.height ||
+            jump[i].y + jump[i].height < player.y) {
         } else {
-            moveUp = 16
-            speedCounter++
-            console.log("Speed boost hit")
+            jumpCounter++
+            style.innerText = "\nStyle points added!"
+            player.sX = 83
+            player.width = 36
         }
     }
 }
@@ -155,9 +159,8 @@ function start() {
         handleSpeedBoost()
         detectCollision()
         movePlayer()
-        console.log(trees)
         gameFrame = gameFrame + 1
-        score = Math.floor(gameFrame / 60 * 10)
+        score = Math.floor(gameFrame / 60 * 10) + stylePoints
         points.textContent = score
     } else {
         endGame()
@@ -165,6 +168,7 @@ function start() {
 }
 
 const endGame = () => {
+    stylePoints = 0
     gameOver = false
     audio.pause()
     audio.currentTime = 0.0
@@ -196,54 +200,10 @@ function movePlayer() {
         player.sX = 46
     }
 }
-// Clicking on button starts the game
+// Clicking on Start button starts the game
 document.getElementById("start").addEventListener("click", () => {
     document.getElementById("start").style.display = "none"
+    player.x = game.width / 2
+    player.y = game.height / 5
     start()
 })
-
-// Condition to check if trees are touching, not working
-// if (trees[i].x > trees[j].x + trees[j].width ||
-//     trees[i].x + trees[i].width < trees[j].x ||
-//     trees[i].y > trees[j].y + trees[j].height ||
-//     trees[i].y + trees[i].height < trees[j].y)
-
-// creating class of Skier
-// class Skier {
-//     constructor(x, y, color, width, height) {
-//         this.x = x
-//         this.y = y
-//         this.color = color
-//         this.width = width
-//         this.height = height
-//         this.alive = true
-//         this.direction = {
-//             right: false,
-//             left: false
-//         }
-//     }
-//     // Key directions
-//     setDirection(key) {
-//         if (key.toLowerCase() == "a") this.direction.left = true
-//         if (key.toLowerCase() == "d") this.direction.right = true
-//     }
-//     unsetDirection(key) {
-//         if (key.toLowerCase() == "a") this.direction.left = false
-//         if (key.toLowerCase() == "d") this.direction.right = false
-//     }
-//     movePlayer() {
-//         if (this.direction.left) this.x -= 3
-//         if (this.x <= 0) {
-//             this.x = 0
-//         }
-//         if (this.direction.right) this.x += 3
-//         if (this.x + this.width >= game.width) {
-//             this.x = game.width - this.width
-//         }
-
-//     }
-//     render = function () {
-//         ctx.fillStyle = this.color
-//         ctx.fillRect(this.x, this.y, this.width, this.height)
-//     }
-// }
