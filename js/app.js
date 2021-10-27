@@ -198,12 +198,11 @@ function handleSpeedBoost() {
 }
 //<------------------------------------Collision Detection------------------------------------>
 function detectCollision() {
-    // -5 included in conditions to give leeway for rect shape making hit detection off
     for (let i = 0; i < trees.length; i++) {
-        if (trees[i].x > player.x + 10 + player.width ||
+        if (trees[i].x > player.x + player.width ||
             trees[i].x + trees[i].width < player.x ||
-            trees[i].y + 10 > player.y + 10 + player.height ||
-            trees[i].y + trees[i].height - 10 < player.y) {
+            trees[i].y > player.y + player.height ||
+            trees[i].y + trees[i].height < player.y) {
             // No collision
         } else {
             // Collision occuring
