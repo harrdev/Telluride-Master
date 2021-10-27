@@ -30,7 +30,7 @@ const player = {
     speed: 2
 }
 const playerSprite = new Image()
-playerSprite.src = "files/skiSpritesFixed.png"
+playerSprite.src = "files/sprites3.png"
 // Initialize skier/player. s = source, d = draw.  There are 9 args/params for ctx.drawImage with images
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
@@ -104,13 +104,6 @@ function handleSpeedBoost() {
         jump.push(new JumpBonus())
     }
     for (let i = 0; i < jump.length; i++) {
-        // if statement for collision check with trees.  Not working exactly
-        if (trees[i].x > jump.x + jump.width ||
-            trees[i].x + trees[i].width < jump.x ||
-            trees[i].y > jump.y + jump.height ||
-            trees[i].y + trees[i].height < jump.y) {
-            jump.push(new JumpBonus())
-        }
         jump[i].update()
         jump[i].draw()
     }
@@ -168,8 +161,8 @@ function start() {
         ctx.clearRect(0, 0, game.width, game.height)
         drawSprite(playerSprite, player.sX, player.sY, player.width, player.height, player.x, player.y, player.width * 1.5, player.height * 1.5)
         audio.play()
-        handleTrees()
         handleSpeedBoost()
+        handleTrees()
         detectCollision()
         movePlayer()
         gameFrame = gameFrame + 1
@@ -227,5 +220,8 @@ document.getElementById("start").addEventListener("click", () => {
     message.style.display = "none"
     player.x = game.width / 2
     player.y = game.height / 5
+    player.sX = 65
+    player.sY = 0
+    player.width = 19
     start()
 })

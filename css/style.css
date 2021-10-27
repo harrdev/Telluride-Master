@@ -62,23 +62,25 @@ main {
 
 #canvas {
     display: block;
-    /* background-image: url("../files/Background-Snow.jpeg");
+    background-image: url("../files/Background-Snow.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: cover; */
-    background-color: white;
+    background-size: cover;
+    /* background-color: white; */
     margin: 0 auto;
     text-align: center;
     border: 5px solid blue;
 }
 
 #start {
-    position: absolute;
+    position: relative;
     display: block;
     height: 60px;
-    width: 80px;
+    width: 100px;
     left: 47%;
-    top: 41%;
+    top: 21%;
+    font-weight: bold;
+    font-size: 20px;
     background-color: orange;
 }
 
@@ -88,7 +90,7 @@ main {
     left: 42%;
     top: 45%;
     height: 100px;
-    width: 200px;
+    width: 400px;
     color: red;
     text-align: center;
     line-height: 100px;
