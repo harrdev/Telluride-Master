@@ -40,9 +40,15 @@ h1 {
 }
 
 .messages {
+    position: absolute;
+    top: 55%;
+    left: 25%;
+    display: block;
     width: 600px;
     margin: 0 auto;
     height: 50px;
+    text-align: center;
+    margin: 0 auto;
 }
 
 h2 {
@@ -53,11 +59,16 @@ h2 {
     max-width: 75em;
     margin: 50px auto;
     padding: 0;
+    position: relative;
+    text-align: center;
 }
     
 main {
     height: 100%;
     width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
 }
 
 #canvas {
@@ -73,12 +84,13 @@ main {
 }
 
 #start {
-    position: relative;
     display: block;
+    position: absolute;
+    margin: 0 auto;
+    left: 45.8%;
+    top: 33%;
     height: 60px;
     width: 100px;
-    left: 47%;
-    top: 21%;
     font-weight: bold;
     font-size: 20px;
     background-color: orange;
@@ -86,14 +98,8 @@ main {
 }
 
 #message {
-    position: absolute;
-    display: block;
-    left: 42%;
-    top: 45%;
-    height: 100px;
-    width: 400px;
     color: red;
     text-align: center;
-    line-height: 100px;
     font-size: 26px;
+    text-align: center;
 }
