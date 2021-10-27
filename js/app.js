@@ -20,6 +20,7 @@ const audio = new Audio("files/gameMusic.wav")
 let gameStateActive = true
 //<-----------------------------------Player/Skier Section----------------------------------->
 const player = {
+    // Game.width & height set this way to place player in middle top portion of canvas
     x: game.width / 2,
     y: game.height / 5,
     width: 19,
@@ -30,13 +31,13 @@ const player = {
 }
 const playerSprite = new Image()
 playerSprite.src = "files/skiSpritesFixed.png"
-// Initialize skier/player
+// Initialize skier/player. s = source, d = draw.  There are 9 args/params for ctx.drawImage with images
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
 }
 //<------------------------------------Tree Object Section------------------------------------>
 const treeSprite = new Image()
-treeSprite.src = "files/ptree.png"
+treeSprite.src = "files/tree.png"
 let trees = []
 class Tree {
     constructor() {
@@ -51,13 +52,14 @@ class Tree {
         this.y -= this.moveY
     }
     draw() {
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        // under the .png images are rectangle hit boxes, that's what this is drawing
+        //ctx.fillRect(this.x, this.y, this.width, this.height)
         ctx.drawImage(treeSprite, 0, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
     }
 }
 // handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
-    // Creates a new Tree and pushes it into the array every 10 frames
+    // Creates a new Tree and pushes it into the array every x frames
     if (gameFrame % 12 === 0) {
         trees.push(new Tree())
         //console.log(trees.length)
@@ -89,7 +91,7 @@ class JumpBonus {
     update() {
         this.y -= this.moveY
     }
-    // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to green
+    // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to blue
     draw() {
         ctx.beginPath()
         ctx.rect(this.x, this.y, this.width, this.height)
@@ -102,6 +104,13 @@ function handleSpeedBoost() {
         jump.push(new JumpBonus())
     }
     for (let i = 0; i < jump.length; i++) {
+        // if statement for collision check with trees.  Not working exactly
+        if (trees[i].x > jump.x + jump.width ||
+            trees[i].x + trees[i].width < jump.x ||
+            trees[i].y > jump.y + jump.height ||
+            trees[i].y + trees[i].height < jump.y) {
+            jump.push(new JumpBonus())
+        }
         jump[i].update()
         jump[i].draw()
     }
@@ -113,14 +122,15 @@ function handleSpeedBoost() {
 }
 //<------------------------------------Collision Detection------------------------------------>
 function detectCollision() {
+    // -5 included in conditions to give leeway for rect shape making hit detection off
     for (let i = 0; i < trees.length; i++) {
-        if (trees[i].x > player.x + player.width ||
-            trees[i].x + trees[i].width < player.x ||
-            trees[i].y > player.y + player.height ||
-            trees[i].y + trees[i].height < player.y) {
-            //console.log("No Collision")
+        if (trees[i].x + 5 > player.x + player.width ||
+            trees[i].x + trees[i].width - 5 < player.x ||
+            trees[i].y + 5 > player.y + player.height ||
+            trees[i].y + trees[i].height - 5 < player.y) {
+            // No collision
         } else {
-            //console.log("Collision detected")
+            // Collision occuring
             gameOver = true
         }
     }
