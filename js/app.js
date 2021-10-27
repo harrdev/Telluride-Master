@@ -35,13 +35,96 @@ playerSprite.src = "files/sprites3.png"
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
 }
+//<--------------------------------------Lift buckets Section--------------------------------->
+const bucketSprite = new Image()
+bucketSprite.src = "files/spritesMore.png"
+let buckets = []
+class Bucket {
+    constructor() {
+        // Game width set to to make sure lifts do not overlap with ski lift
+        this.x = 570
+        this.y = game.height
+        this.moveY = 9
+        this.width = 26
+        this.height = 34
+    }
+    // update() moves the y-coordinate to move buckets upward
+    update() {
+        this.y -= this.moveY
+    }
+    draw() {
+        // under the .png images are rectangle hit boxes, that's what this is drawing
+        ctx.drawImage(bucketSprite, 80, 30, this.width, this.height, this.x, this.y, this.width, this.height)
+    }
+}
+// handleLift takes in the lift Bucket array and cycles through all that are in the array to move and draw
+function handleBuckets() {
+    // Creates a new Lift Bucket and pushes it into the array every x frames
+    if (gameFrame % 90 === 0) {
+        buckets.push(new Bucket())
+    }
+    // Loops through the array: Draws what's in the array and updates animation
+    for (let i = 0; i < buckets.length; i++) {
+        buckets[i].update()
+        buckets[i].draw()
+    }
+    // Checks to see if a lift bucket has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
+    for (let i = 0; i < buckets.length; i++) {
+        if (buckets[i].y < -60) {
+            buckets.splice(i, 1)
+        }
+    }
+}
+//<-----------------------------------------Ski Lift Section---------------------------------->
+const liftSprite = new Image()
+liftSprite.src = "files/spritesMore.png"
+let lifts = []
+class Lift {
+    constructor() {
+        // Game width set to to make sure lifts do not overlap with ski lift
+        this.x = 580
+        this.y = game.height
+        this.moveY = 8
+        this.width = 14
+        this.height = 50
+    }
+    // update() moves the y-coordinate to move trees upward
+    update() {
+        this.y -= this.moveY
+    }
+    draw() {
+        // under the .png images are rectangle hit boxes, that's what this is drawing
+        //ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.drawImage(liftSprite, 60, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
+    }
+}
+// handleLift takes in the lifts array and cycles through all that are in the array to move and draw
+function handleLift() {
+    // Creates a new Lift and pushes it into the array every x frames
+    if (gameFrame % 60 === 0) {
+        lifts.push(new Lift())
+        //console.log(trees.length)
+    }
+    // Loops through the array: Draws what's in the array and updates animation
+    for (let i = 0; i < lifts.length; i++) {
+        lifts[i].update()
+        lifts[i].draw()
+    }
+    // Checks to see if a lift has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
+    for (let i = 0; i < lifts.length; i++) {
+        if (lifts[i].y < -60) {
+            lifts.splice(i, 1)
+        }
+    }
+}
 //<------------------------------------Tree Object Section------------------------------------>
 const treeSprite = new Image()
 treeSprite.src = "files/tree.png"
 let trees = []
 class Tree {
     constructor() {
-        this.x = Math.floor(Math.random() * (game.width - 50))
+        // Game width set to -50 to make sure trees do not overlap with ski lift
+        this.x = Math.floor(Math.random() * (game.width - 60))
         this.y = game.height
         this.moveY = 8
         this.width = 34
@@ -117,10 +200,21 @@ function handleSpeedBoost() {
 function detectCollision() {
     // -5 included in conditions to give leeway for rect shape making hit detection off
     for (let i = 0; i < trees.length; i++) {
-        if (trees[i].x + 5 > player.x + player.width ||
-            trees[i].x + trees[i].width - 5 < player.x ||
-            trees[i].y + 5 > player.y + player.height ||
-            trees[i].y + trees[i].height - 5 < player.y) {
+        if (trees[i].x > player.x + 10 + player.width ||
+            trees[i].x + trees[i].width < player.x ||
+            trees[i].y + 10 > player.y + 10 + player.height ||
+            trees[i].y + trees[i].height - 10 < player.y) {
+            // No collision
+        } else {
+            // Collision occuring
+            gameOver = true
+        }
+    }
+    for (let i = 0; i < lifts.length; i++) {
+        if (lifts[i].x > player.x + player.width ||
+            lifts[i].x + lifts[i].width < player.x ||
+            lifts[i].y > player.y + player.height ||
+            lifts[i].y + lifts[i].height < player.y) {
             // No collision
         } else {
             // Collision occuring
@@ -163,6 +257,8 @@ function start() {
         audio.play()
         handleSpeedBoost()
         handleTrees()
+        handleLift()
+        handleBuckets()
         detectCollision()
         movePlayer()
         gameFrame = gameFrame + 1
@@ -181,6 +277,8 @@ const endGame = () => {
     startButton.style.display = "block"
     trees = []
     jump = []
+    buckets = []
+    lifts = []
     moveUp = 8
     if (score > highScore) {
         highScore = score
