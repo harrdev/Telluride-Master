@@ -40,7 +40,7 @@ h1 {
     top: 20%;
 }
 
-.messages {
+.messages, .level {
     position: absolute;
     top: 55%;
     left: 25%;
@@ -52,11 +52,21 @@ h1 {
     margin: 0 auto;
 }
 
+.level {
+    top: 10%;
+    left: 25%;
+}
+
 #message {
     color: red;
     text-align: center;
     font-size: 26px;
+}
+
+#levelNumber {
+    color: green;
     text-align: center;
+    font-size: 28px;
 }
 
 h2 {
