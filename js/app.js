@@ -4,10 +4,10 @@ const ctx = game.getContext("2d")
 const style = document.getElementById("style")
 const message = document.getElementById("message")
 const startButton = document.getElementById("start")
+const audio = new Audio("files/gameMusic.wav")
 game.width = 600
 game.height = 600
-let playerOneScore = 0
-let playerTwoScore = 0
+// gameFrame used as a counter, counting up every animationFrame. Used for creating delays
 let gameFrame = 0
 let gameOver = false
 let jumpCounter = 0
@@ -16,8 +16,6 @@ let highScore = 0
 let stylePoints = 0
 let jumping = false
 const keys = []
-const audio = new Audio("files/gameMusic.wav")
-let gameStateActive = true
 //<-----------------------------------Player/Skier Section----------------------------------->
 const player = {
     // Game.width & height set this way to place player in middle top portion of canvas
@@ -48,7 +46,6 @@ class Bucket {
         this.width = 26
         this.height = 34
     }
-    // update() moves the y-coordinate to move buckets upward
     update() {
         this.y -= this.moveY
     }
@@ -56,18 +53,14 @@ class Bucket {
         ctx.drawImage(bucketSprite, 80, 30, this.width, this.height, this.x, this.y, this.width, this.height)
     }
 }
-// handleLift takes in the lift Bucket array and cycles through all that are in the array to move and draw
 function handleBuckets() {
-    // Creates a new Lift Bucket and pushes it into the array every x frames
     if (gameFrame % 90 === 0) {
         buckets.push(new Bucket())
     }
-    // Loops through the array: Draws what's in the array and updates animation
     for (let i = 0; i < buckets.length; i++) {
         buckets[i].update()
         buckets[i].draw()
     }
-    // Checks to see if a lift bucket has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
     for (let i = 0; i < buckets.length; i++) {
         if (buckets[i].y < -60) {
             buckets.splice(i, 1)
@@ -87,7 +80,6 @@ class Lift {
         this.width = 14
         this.height = 50
     }
-    // update() moves the y-coordinate to move trees upward
     update() {
         this.y -= this.moveY
     }
@@ -95,19 +87,14 @@ class Lift {
         ctx.drawImage(liftSprite, 60, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
     }
 }
-// handleLift takes in the lifts array and cycles through all that are in the array to move and draw
 function handleLift() {
-    // Creates a new Lift and pushes it into the array every x frames
     if (gameFrame % 60 === 0) {
         lifts.push(new Lift())
-        //console.log(trees.length)
     }
-    // Loops through the array: Draws what's in the array and updates animation
     for (let i = 0; i < lifts.length; i++) {
         lifts[i].update()
         lifts[i].draw()
     }
-    // Checks to see if a lift has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
     for (let i = 0; i < lifts.length; i++) {
         if (lifts[i].y < -60) {
             lifts.splice(i, 1)
@@ -127,7 +114,6 @@ class Tree {
         this.width = 34
         this.height = 64
     }
-    // update() moves the y-coordinate to move trees upward
     update() {
         this.y -= this.moveY
     }
@@ -135,19 +121,14 @@ class Tree {
         ctx.drawImage(treeSprite, 0, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
     }
 }
-// handleTrees takes in the trees array and cycles through all that are in the array to move and draw
 function handleTrees() {
-    // Creates a new Tree and pushes it into the array every x frames
     if (gameFrame % 12 === 0) {
         trees.push(new Tree())
-        //console.log(trees.length)
     }
-    // Loops through the array: Draws what's in the array and updates animation
     for (let i = 0; i < trees.length; i++) {
         trees[i].update()
         trees[i].draw()
     }
-    // Checks to see if a tree has gone above the top of the screen and slices it out of the array.  Keeps array from growing too big
     for (let i = 0; i < trees.length; i++) {
         if (trees[i].y < -60) {
             trees.splice(i, 1)
@@ -158,6 +139,7 @@ function handleTrees() {
 let jump = []
 class JumpBonus {
     constructor() {
+        // game.width -50 to ensure jump ramps don't conflict with ski lifts
         this.x = Math.floor(Math.random() * (game.width - 50))
         this.y = game.height + Math.random() * game.height
         this.moveY = 8
