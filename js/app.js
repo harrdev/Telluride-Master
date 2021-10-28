@@ -15,6 +15,7 @@ let score = 0
 let highScore = 0
 let stylePoints = 0
 let jumping = false
+let speed = 8
 const keys = []
 //<-----------------------------------Player/Skier Section----------------------------------->
 const player = {
@@ -42,7 +43,7 @@ class Bucket {
         // Game width set to to make sure lifts do not overlap with ski lift
         this.x = 570
         this.y = game.height
-        this.moveY = 9
+        this.moveY = speed + 1
         this.width = 26
         this.height = 34
     }
@@ -76,7 +77,7 @@ class Lift {
         // Game width set to to make sure lifts do not overlap with ski lift
         this.x = 580
         this.y = game.height
-        this.moveY = 8
+        this.moveY = speed
         this.width = 14
         this.height = 50
     }
@@ -110,7 +111,7 @@ class Tree {
         // Game width set to -60 to make sure trees do not overlap with ski lift
         this.x = Math.floor(Math.random() * (game.width - 60))
         this.y = game.height
-        this.moveY = 8
+        this.moveY = speed
         this.width = 34
         this.height = 64
     }
@@ -142,7 +143,7 @@ class JumpBonus {
         // game.width -50 to ensure jump ramps don't conflict with ski lifts
         this.x = Math.floor(Math.random() * (game.width - 50))
         this.y = game.height + Math.random() * game.height
-        this.moveY = 8
+        this.moveY = speed
         this.width = 50
         this.height = 8
     }
@@ -220,6 +221,18 @@ function detectCollision() {
         }
     }
 }
+//<---------------------------------------Increases speed by score---------------------------->
+const easy = () => {
+    if (score > 200) {
+        speed = 10
+    }
+    if (score > 400) {
+        speed = 12
+    }
+    if (score > 600) {
+        speed = 14
+    }
+}
 //<-----------------------------------------Game Loop----------------------------------------->
 function start() {
     if (gameOver === false) {
@@ -233,6 +246,7 @@ function start() {
         handleBuckets()
         detectCollision()
         movePlayer()
+        easy()
         gameFrame = gameFrame + 1
         score = Math.floor(gameFrame / 60 * 10) + stylePoints
         points.textContent = score
@@ -252,6 +266,7 @@ const endGame = () => {
     jump = []
     buckets = []
     lifts = []
+    speed = 8
     moveUp = 8
     if (score > highScore) {
         highScore = score
