@@ -10,12 +10,12 @@ game.height = 600
 // gameFrame used as a counter, counting up every animationFrame. Used for creating delays
 let gameFrame = 0
 let gameOver = false
-let jumpCounter = 0
 let score = 0
 let highScore = 0
 let stylePoints = 0
 let jumping = false
 let speed = 8
+let jumpCounter = 0
 const keys = []
 //<-----------------------------------Player/Skier Section----------------------------------->
 const player = {
@@ -210,16 +210,18 @@ function detectCollision() {
             player.sX = 83
             player.width = 36
             jumping = true
+            if (jumpCounter === 1) {
+                stylePoints += 25
             setTimeout(() => {
-                jumpCounter = 0
+                jumping = false
                 player.width = 19
                 player.sX = 65
-                stylePoints += 25
                 message.innerText = ""
-                jumping = false
+                jumpCounter = 0
             }, 400);
         }
     }
+}
 }
 //<---------------------------------------Increases speed by score---------------------------->
 const easy = () => {
@@ -258,6 +260,7 @@ function start() {
 // Resets game arrays, states, positioning
 const endGame = () => {
     stylePoints = 0
+    jumping = false
     gameOver = false
     audio.pause()
     audio.currentTime = 0.0
