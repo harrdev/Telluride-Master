@@ -200,6 +200,7 @@ function detectCollision() {
             jump[i].x + jump[i].width < player.x ||
             jump[i].y > player.y + player.height ||
             jump[i].y + jump[i].height < player.y) {
+                // Nothing to do if there's no collision
         } else {
 //<--------------------------------------Jump Logic---------------------------------------->
             jumpCounter++
@@ -209,12 +210,12 @@ function detectCollision() {
             player.width = 36
             jumping = true
             setTimeout(() => {
-                jumping = false
                 jumpCounter = 0
-                player.sX = 65
                 player.width = 19
+                player.sX = 65
                 stylePoints += 25
                 message.innerText = ""
+                jumping = false
             }, 400);
         }
     }
@@ -278,15 +279,18 @@ window.addEventListener("keydown", function (e) {
 window.addEventListener("keyup", function (e) {
     delete keys[e.keyCode]
     player.sX = 65
+    player.width = 19
 })
 function movePlayer() {
     if ((keys[65] || keys[37]) && player.x > 0 && jumping === false) {
         player.x -= player.speed
         player.sX = 26
+        player.width = 19
     }
     if ((keys[68] || keys[39]) && player.x < game.width - player.width - 5 && jumping === false) {
         player.x += player.speed
         player.sX = 46
+        player.width = 19
     }
 }
 //<--------------------------------Start button event listener-------------------------------->
