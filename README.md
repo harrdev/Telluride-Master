@@ -12,6 +12,7 @@ Compete in ski competitions against the high score.  A timer starts and the play
 
 
 ## MVP Goals  BREAK DOWN INTO MORE DETAIL HERE
+### Changed 2 player goal to a high score
     * Core functionality
         1. Animation - All assets loaded in and moving
             * Draw screen with boundries.  Draw scoreboard, timer, player, and trees on screen.  Start trees with random placed below y-axis mark used for drawing the trees.  Player starts in same spot every time.
@@ -25,10 +26,10 @@ Compete in ski competitions against the high score.  A timer starts and the play
             * Screen displays message once player round is over announcing the winner and the scores.
 
 ## Stretch Goals
-    1. Advanced sprites
-    2. Smoother animation
-    3. Sound / Music
-    4. Speed boost "powerups"
+    1. Advanced sprites  -- Done
+    2. Smoother animation  -- Done
+    3. Sound / Music  -- Done
+    4. Speed boost "powerups"  -- Changed vision from speed to style points bonus
     5. Abominal Snowman
 
 ## Potential Roadblocks
@@ -36,7 +37,7 @@ Compete in ski competitions against the high score.  A timer starts and the play
     * Logic with randomly appearing obstacles (trees, etc)
 
 # Research These!
-    1. When player presses down, game world scrolls up? 
-    2. Randomly placing trees below predetermined y-coords
-    3. How accurate hit detection will be with odd shaped sprites, maybe cannot be really accurate?  Check into collision detection options
+    1. When player presses down, game world scrolls up? -- Solved
+    2. Randomly placing trees below predetermined y-coords -- Solved
+    3. How accurate hit detection will be with odd shaped sprites, maybe cannot be really accurate?  Check into collision detection options  -- Solved
     
