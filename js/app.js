@@ -53,7 +53,6 @@ class Bucket {
         this.y -= this.moveY
     }
     draw() {
-        // under the .png images are rectangle hit boxes, that's what this is drawing
         ctx.drawImage(bucketSprite, 80, 30, this.width, this.height, this.x, this.y, this.width, this.height)
     }
 }
@@ -93,8 +92,6 @@ class Lift {
         this.y -= this.moveY
     }
     draw() {
-        // under the .png images are rectangle hit boxes, that's what this is drawing
-        //ctx.fillRect(this.x, this.y, this.width, this.height)
         ctx.drawImage(liftSprite, 60, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
     }
 }
@@ -123,7 +120,7 @@ treeSprite.src = "files/tree.png"
 let trees = []
 class Tree {
     constructor() {
-        // Game width set to -50 to make sure trees do not overlap with ski lift
+        // Game width set to -60 to make sure trees do not overlap with ski lift
         this.x = Math.floor(Math.random() * (game.width - 60))
         this.y = game.height
         this.moveY = 8
@@ -135,8 +132,6 @@ class Tree {
         this.y -= this.moveY
     }
     draw() {
-        // under the .png images are rectangle hit boxes, that's what this is drawing
-        //ctx.fillRect(this.x, this.y, this.width, this.height)
         ctx.drawImage(treeSprite, 0, 0, this.width, this.height, this.x, this.y, this.width * 1.5, this.height * 1.5)
     }
 }
@@ -162,7 +157,6 @@ function handleTrees() {
 //<-----------------------------------Jump Bonus Section----------------------------------->
 let jump = []
 class JumpBonus {
-    // constructor() is template for the rectangles.  this.x and this.y are used to randomly generate where they appear on the screen
     constructor() {
         this.x = Math.floor(Math.random() * (game.width - 50))
         this.y = game.height + Math.random() * game.height
@@ -170,11 +164,9 @@ class JumpBonus {
         this.width = 50
         this.height = 8
     }
-    // update() moves the y-coordinate to move trees upward
     update() {
         this.y -= this.moveY
     }
-    // draw() draws the rectangles taking this.x and this.y to determine where on the screen to draw them.  fillStyle set to blue
     draw() {
         ctx.beginPath()
         ctx.rect(this.x, this.y, this.width, this.height)
@@ -240,7 +232,7 @@ function detectCollision() {
             // Collision happening
             jumpCounter++
             message.style.display = "block"
-            message.innerText = "\n25 Style points added!"
+            message.innerText = "25 Style points added!"
             player.sX = 83
             player.width = 36
             jumping = true
@@ -282,7 +274,7 @@ const endGame = () => {
     if (score > highScore) {
         highScore = score
         message.style.display = "block"
-        message.innerText = "You beat the high score!"
+        message.innerText = "You beat the high score!\nTry it again!"
         document.getElementById("high").innerHTML = highScore
     } else {
         message.style.display = "block"
