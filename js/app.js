@@ -228,17 +228,17 @@ function detectCollision() {
 }
 //<------------------------------------Increases speed by score------------------------------>
 const easy = () => {
-    if (score > 100) {
+    if (score > 200) {
         speed = 9
         level.style.color = "orange"
         level.innerText = "Level 2"
     }
-    if (score > 200) {
+    if (score > 400) {
         speed = 10
         level.style.color = "red"
         level.innerText = "Level 3"
     }
-    if (score > 300) {
+    if (score > 600) {
         speed = 11
         level.style.color = "#8b0000"
         level.innerText = "Level 4"
