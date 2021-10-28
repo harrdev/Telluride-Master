@@ -173,10 +173,11 @@ function handleSpeedBoost() {
 //<------------------------------------Collision Detection------------------------------------>
 function detectCollision() {
     for (let i = 0; i < trees.length; i++) {
-        if (trees[i].x > player.x + player.width ||
-            trees[i].x + trees[i].width < player.x ||
-            trees[i].y > player.y + player.height ||
-            trees[i].y + trees[i].height < player.y) {
+        // The +/- numbers are for some leeway in collision
+        if (trees[i].x > player.x + player.width - 5 ||
+            trees[i].x + trees[i].width - 2 < player.x ||
+            trees[i].y > player.y + player.height - 5 ||
+            trees[i].y + trees[i].height - 5 < player.y) {
             // No collision
         } else {
             // Collision occuring
@@ -199,17 +200,6 @@ function detectCollision() {
             jump[i].x + jump[i].width < player.x ||
             jump[i].y > player.y + player.height ||
             jump[i].y + jump[i].height < player.y) {
-            // If collision with jump ramp happens, run this while no collision with trees is happening
-            if (jumpCounter > 0 && gameFrame % 20 === 0) {
-                jumping = false
-                jumpCounter = 0
-                player.width = 19
-                player.sX = 65
-                stylePoints += 25
-            }
-            if (gameFrame % 200 === 0) {
-                message.innerText = ""
-            }
         } else {
             // Collision happening
             jumpCounter++
@@ -218,6 +208,14 @@ function detectCollision() {
             player.sX = 83
             player.width = 36
             jumping = true
+            setTimeout(() => {
+                jumping = false
+                jumpCounter = 0
+                player.width = 19
+                player.sX = 65
+                stylePoints += 25
+                message.innerText = ""
+            }, 400);
         }
     }
 }
@@ -242,6 +240,7 @@ function start() {
     }
 }
 //<------------------------------------End Game function------------------------------------>
+// Resets game arrays, states, positioning
 const endGame = () => {
     stylePoints = 0
     gameOver = false
@@ -264,6 +263,11 @@ const endGame = () => {
     }
     score = 0
     gameFrame = 0
+    player.x = game.width / 2
+    player.y = game.height / 5
+    player.sX = 65
+    player.sY = 0
+    player.width = 19
 }
 //<-------------------------------Keys event / movement function------------------------------->
 window.addEventListener("keydown", function (e) {
@@ -289,10 +293,5 @@ function movePlayer() {
 document.getElementById("start").addEventListener("click", () => {
     startButton.style.display = "none"
     message.style.display = "none"
-    player.x = game.width / 2
-    player.y = game.height / 5
-    player.sX = 65
-    player.sY = 0
-    player.width = 19
     start()
 })
