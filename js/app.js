@@ -201,7 +201,7 @@ function detectCollision() {
             jump[i].y > player.y + player.height ||
             jump[i].y + jump[i].height < player.y) {
         } else {
-            // Collision happening
+//<--------------------------------------Jump Logic---------------------------------------->
             jumpCounter++
             message.style.display = "block"
             message.innerText = "25 Style points added!"
@@ -280,11 +280,11 @@ window.addEventListener("keyup", function (e) {
     player.sX = 65
 })
 function movePlayer() {
-    if (keys[65] && player.x > 0 && jumping === false) {
+    if ((keys[65] || keys[37]) && player.x > 0 && jumping === false) {
         player.x -= player.speed
         player.sX = 26
     }
-    if (keys[68] && player.x < game.width - player.width - 5 && jumping === false) {
+    if ((keys[68] || keys[39]) && player.x < game.width - player.width - 5 && jumping === false) {
         player.x += player.speed
         player.sX = 46
     }
