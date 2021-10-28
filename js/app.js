@@ -211,8 +211,8 @@ function detectCollision() {
             setTimeout(() => {
                 jumping = false
                 jumpCounter = 0
-                player.width = 19
                 player.sX = 65
+                player.width = 19
                 stylePoints += 25
                 message.innerText = ""
             }, 400);
