@@ -203,10 +203,10 @@ function detectCollision() {
             jump[i].x + jump[i].width < player.x ||
             jump[i].y > player.y + player.height ||
             jump[i].y + jump[i].height < player.y) {
-                // No collision
-                // Nothing to do if there's no collision
+            // No collision
+            // Nothing to do if there's no collision
         } else {
-//<--------------------------------------Jump Logic---------------------------------------->
+            //<--------------------------------------Jump Logic---------------------------------------->
             jumpCounter++
             message.style.display = "block"
             message.innerText = "25 Style points added!"
@@ -215,16 +215,16 @@ function detectCollision() {
             jumping = true
             if (jumpCounter === 1) {
                 stylePoints += 25
-            setTimeout(() => {
-                jumping = false
-                player.width = 19
-                player.sX = 65
-                message.innerText = ""
-                jumpCounter = 0
-            }, 400);
+                setTimeout(() => {
+                    jumping = false
+                    player.width = 19
+                    player.sX = 65
+                    message.innerText = ""
+                    jumpCounter = 0
+                }, 400);
+            }
         }
     }
-}
 }
 //<------------------------------------Increases speed by score------------------------------>
 const easy = () => {
