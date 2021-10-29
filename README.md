@@ -1,7 +1,7 @@
 # Telluride-Master
 Compete in ski competitions against the high score.  A timer starts and the player avoids obstacles while seeing how long they can ski for before crashing.  The score of the player will be the time in seconds that they were up before crashing.
 
-# Deployed at harrdev.com
+# Deployed at harrdev.com and https://harrdev.github.io/Telluride-Master/
 
 ## Tech stack
 * HTML & HTML Canvas

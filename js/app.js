@@ -15,6 +15,7 @@ let gameOver = false
 let score = 0
 let highScore = 0
 let stylePoints = 0
+// jumping is used to lock key events in a conditional to prevent players from moving in the air while jumping
 let jumping = false
 let speed = 8
 // jumpCounter is used to ensure when collision with jump ramp happens that the bonus is only applied once.  Used in conditional to ensure this, and reset to 0 in same block of code
@@ -32,7 +33,7 @@ const player = {
 }
 const playerSprite = new Image()
 playerSprite.src = "files/sprites3.png"
-// Initialize skier/player. s = source, d = draw.  There are 9 args/params for ctx.drawImage with images on a sprite sheet
+// Initialize skier/player. s = source, d = destination.  There are 9 args/params for ctx.drawImage with images on a sprite sheet
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
 }
@@ -57,6 +58,7 @@ class Bucket {
     }
 }
 function handleBuckets() {
+    // in the handle functions, I'm using a gameFrame variable that is set every game loop.  It is being used as a conditional with modulus for a little randomness
     if (gameFrame % 90 === 0) {
         buckets.push(new Bucket())
     }
@@ -213,6 +215,7 @@ function detectCollision() {
             player.sX = 83
             player.width = 36
             jumping = true
+            // logic to ensure that the following only happens ONCE during collision detection with jump ramp
             if (jumpCounter === 1) {
                 stylePoints += 25
                 setTimeout(() => {
