@@ -9,7 +9,7 @@ const audio = new Audio("files/gameMusic.wav")
 const keys = []
 game.width = 600
 game.height = 600
-// gameFrame used as a counter, counting up every animationFrame. Used for creating delays
+// gameFrame used as a counter, counting up every animationFrame. Used for creating random delays
 let gameFrame = 0
 let gameOver = false
 let score = 0
@@ -227,7 +227,7 @@ function detectCollision() {
     }
 }
 //<------------------------------------Increases speed by score------------------------------>
-const easy = () => {
+const difficulty = () => {
     if (score > 200) {
         speed = 9
         level.style.color = "orange"
@@ -257,7 +257,7 @@ function start() {
         handleBuckets()
         detectCollision()
         movePlayer()
-        easy()
+        difficulty()
         gameFrame = gameFrame + 1
         score = Math.floor(gameFrame / 60 * 10) + stylePoints
         points.textContent = score
