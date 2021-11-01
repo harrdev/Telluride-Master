@@ -4,19 +4,23 @@ const ctx = game.getContext("2d")
 const style = document.getElementById("style")
 const message = document.getElementById("message")
 const startButton = document.getElementById("start")
+const level = document.getElementById("levelNumber")
 const audio = new Audio("files/gameMusic.wav")
+const keys = []
 game.width = 600
 game.height = 600
-// gameFrame used as a counter, counting up every animationFrame. Used for creating delays
+// gameFrame used as a counter, counting up every animationFrame. Used for creating random delays
 let gameFrame = 0
 let gameOver = false
 let score = 0
 let highScore = 0
 let stylePoints = 0
+// jumping is used to lock key events in a conditional to prevent players from moving in the air while jumping
 let jumping = false
 let speed = 8
+// jumpCounter is used to ensure when collision with jump ramp happens that the bonus is only applied once.  Used in conditional to ensure this, and reset to 0 in same block of code
 let jumpCounter = 0
-const keys = []
+message.innerText = "Press 'a' or left arrow to turn left, 'd' or right arrow to turn right.  Hit blue jump ramps for style points!"
 //<-----------------------------------Player/Skier Section----------------------------------->
 const player = {
     // Game.width & height set this way to place player in middle top portion of canvas
@@ -30,7 +34,7 @@ const player = {
 }
 const playerSprite = new Image()
 playerSprite.src = "files/sprites3.png"
-// Initialize skier/player. s = source, d = draw.  There are 9 args/params for ctx.drawImage with images
+// Initialize skier/player. s = source, d = destination.  There are 9 args/params for ctx.drawImage with images on a sprite sheet
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH)
 }
@@ -40,7 +44,7 @@ bucketSprite.src = "files/spritesMore.png"
 let buckets = []
 class Bucket {
     constructor() {
-        // Game width set to to make sure lifts do not overlap with ski lift
+        // Game width hard coded to to make sure lifts do not overlap with ski lift
         this.x = 570
         this.y = game.height
         this.moveY = speed + 1
@@ -55,6 +59,7 @@ class Bucket {
     }
 }
 function handleBuckets() {
+    // in the handle functions, I'm using a gameFrame variable that is set every game loop.  It is being used as a conditional with modulus for a little randomness
     if (gameFrame % 90 === 0) {
         buckets.push(new Bucket())
     }
@@ -63,7 +68,7 @@ function handleBuckets() {
         buckets[i].draw()
     }
     for (let i = 0; i < buckets.length; i++) {
-        if (buckets[i].y < -60) {
+        if (buckets[i].y < -40) {
             buckets.splice(i, 1)
         }
     }
@@ -74,7 +79,7 @@ liftSprite.src = "files/spritesMore.png"
 let lifts = []
 class Lift {
     constructor() {
-        // Game width set to to make sure lifts do not overlap with ski lift
+        // Game width set to to make sure lifts are positioned exactly 
         this.x = 580
         this.y = game.height
         this.moveY = speed
@@ -157,7 +162,7 @@ class JumpBonus {
         ctx.fill()
     }
 }
-function handleSpeedBoost() {
+function handleBonus() {
     if (gameFrame % 160 === 0) {
         jump.push(new JumpBonus())
     }
@@ -201,38 +206,46 @@ function detectCollision() {
             jump[i].x + jump[i].width < player.x ||
             jump[i].y > player.y + player.height ||
             jump[i].y + jump[i].height < player.y) {
-                // Nothing to do if there's no collision
+            // No collision
+            // Nothing to do if there's no collision
         } else {
-//<--------------------------------------Jump Logic---------------------------------------->
+            //<--------------------------------------Jump Logic---------------------------------------->
             jumpCounter++
             message.style.display = "block"
             message.innerText = "25 Style points added!"
             player.sX = 83
             player.width = 36
             jumping = true
+            // logic to ensure that the following only happens ONCE during collision detection with jump ramp
             if (jumpCounter === 1) {
                 stylePoints += 25
-            setTimeout(() => {
-                jumping = false
-                player.width = 19
-                player.sX = 65
-                message.innerText = ""
-                jumpCounter = 0
-            }, 400);
+                setTimeout(() => {
+                    jumping = false
+                    player.width = 19
+                    player.sX = 65
+                    message.innerText = ""
+                    jumpCounter = 0
+                }, 400);
+            }
         }
     }
 }
-}
-//<---------------------------------------Increases speed by score---------------------------->
-const easy = () => {
+//<------------------------------------Increases speed by score------------------------------>
+const difficulty = () => {
     if (score > 200) {
-        speed = 10
+        speed = 9
+        level.style.color = "orange"
+        level.innerText = "Level 2"
     }
     if (score > 400) {
-        speed = 12
+        speed = 10
+        level.style.color = "red"
+        level.innerText = "Level 3"
     }
     if (score > 600) {
-        speed = 14
+        speed = 11
+        level.style.color = "#8b0000"
+        level.innerText = "Level 4"
     }
 }
 //<-----------------------------------------Game Loop----------------------------------------->
@@ -242,13 +255,13 @@ function start() {
         ctx.clearRect(0, 0, game.width, game.height)
         drawSprite(playerSprite, player.sX, player.sY, player.width, player.height, player.x, player.y, player.width * 1.5, player.height * 1.5)
         audio.play()
-        handleSpeedBoost()
+        handleBonus()
         handleTrees()
         handleLift()
         handleBuckets()
         detectCollision()
         movePlayer()
-        easy()
+        difficulty()
         gameFrame = gameFrame + 1
         score = Math.floor(gameFrame / 60 * 10) + stylePoints
         points.textContent = score
@@ -315,5 +328,7 @@ function movePlayer() {
 document.getElementById("start").addEventListener("click", () => {
     startButton.style.display = "none"
     message.style.display = "none"
+    level.style.color = "green"
+    level.innerText = "Level 1"
     start()
 })
