@@ -1,7 +1,7 @@
 # Telluride-Master
 Compete in ski competitions against the high score.  A timer starts and the player avoids obstacles while seeing how long they can ski for before crashing.  The score of the player will be the time in seconds that they were up before crashing.
 
-# Deployed at harrdev.com and https://harrdev.github.io/Telluride-Master/
+# Deployed at https://harrdev.github.io/Telluride-Master/
 
 ## Tech stack
 * HTML & HTML Canvas
@@ -12,7 +12,7 @@ Compete in ski competitions against the high score.  A timer starts and the play
 ![Screen Shot 2021-10-22 at 11 17 46 AM](https://user-images.githubusercontent.com/86644498/138520229-935ed28a-ddb5-4811-9f6d-dca816ccf992.png)
 
 
-## MVP Goals  BREAK DOWN INTO MORE DETAIL HERE
+## MVP Goals
 ### Changed 2 player goal to a high score
     * Core functionality
         1. Animation - All assets loaded in and moving
@@ -33,9 +33,9 @@ Compete in ski competitions against the high score.  A timer starts and the play
     4. Speed boost "powerups"  -- Changed vision from speed to style points bonus
     5. Abominal Snowman
 
-## Potential Roadblocks
-    * Time - 1 week to deliver
-    * Logic with randomly appearing obstacles (trees, etc)
+## Additional stretch goals completed
+    1. Added levels, increasing speed at certain point intervals
+    2. Added ski lifts that are suspended in the air, no collision on these, and move faster than the game world to be more immersive/realistic
 
 
     
