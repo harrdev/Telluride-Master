@@ -20,7 +20,7 @@ let jumping = false
 let speed = 8
 // jumpCounter is used to ensure when collision with jump ramp happens that the bonus is only applied once.  Used in conditional to ensure this, and reset to 0 in same block of code
 let jumpCounter = 0
-message.innerText = "Press 'a' or left arrow to turn left, 'd' or right arrow to turn right.  Hit blue jump ramps for style points!"
+message.innerText = "Press 'a' or left arrow to turn left, 'd' or right arrow to turn right."
 //<-----------------------------------Player/Skier Section----------------------------------->
 const player = {
     // Game.width & height set this way to place player in middle top portion of canvas
