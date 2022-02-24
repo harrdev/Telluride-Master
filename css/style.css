@@ -19,31 +19,56 @@ h1 {
     font-size: 50px;
 }
 
-.gameInfo {
-    display: flex;
-    margin: 0 auto;
+#container {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-rows: .25fr .5fr .25fr;
+    grid-template-columns: .40fr .2fr .40fr;
+    grid-template-areas: "top-left top-middle top-right"
+        "game game game";
+    margin: 0px auto;
     padding: 0;
-    background-color: #87CEEB;
-    width: 600px;
-    border: 5px solid blue;
+    position: relative;
     text-align: center;
+    max-width: 50em;
 }
 
-.pointBonus {
-    width: 50%;
-    text-align: center;
-    border: 3px solid blue;
-    border-bottom: none;
-    top: 20%;
+.top-left, .top-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightblue;
 }
 
+.top-left {
+    grid-area: top-left;
+}
+
+.top-right {
+    grid-area: top-right;
+}
+
+.top-middle {
+    grid-area: top-middle;
+    justify-self: stretch;
+    align-self: center;
+}
+
+#levelNumber {
+    position: absolute;
+    display: block;
+    top: 10%;
+    color: green;
+    text-align: center;
+    font-size: 28px;
+}
 .messages, .level {
     display: block;
     position: absolute;
     text-align: center;
-    top: 30%;
+    left: 37%;
+    top: 40%;
     width: 25vw;
-    align-items: center;
 }
 
 #message {
@@ -52,27 +77,11 @@ h1 {
     font-size: 26px;
 }
 
-#levelNumber {
-    color: green;
-    text-align: center;
-    font-size: 28px;
-}
 
 h2 {
     font-size: 25px;
 }
 
-#container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 75vw;
-    max-height: 75vh;
-    margin: 50px auto;
-    padding: 0;
-    position: relative;
-    text-align: center;
-}
 
 #canvas {
     display: block;
@@ -84,13 +93,18 @@ h2 {
     margin: 0 auto;
     text-align: center;
     border: 5px solid blue;
+    grid-area: game;
+    width: 100%;
+    height: 100%;
 }
 
 #start {
-    height: 60px;
-    width: 100px;
+    /* height: 60px;
+    width: 100px; */
     font-weight: bold;
     font-size: 20px;
     background-color: orange;
     cursor: pointer;
+    height: 100%;
+    width: 100%;
 }

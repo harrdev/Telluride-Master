@@ -13,26 +13,26 @@
 </head>
 
 <body>
+    <h1>Telluride</h1>
     <div id="container">
-        <h1>Telluride</h1>
-        <div class="gameInfo">
-            <div class="pointBonus">
-                <h2>Points: <span id="points"></span></h2>
-            </div>
-            <div class="pointBonus">
-                <h2>High Score: <span id="high"></span>
-            </div>
-        </div>
-        <canvas id="canvas"></canvas>
-        <div class="level">
-            <h2 id="levelNumber"></h2>
-        </div>
-        <div class="messages">
+        <aside class="top-left">
+            <h2>Points: <span id="points"></span></h2>
+        </aside>
+        <aside class="top-right">
+            <h2>High Score: <span id="high"></span></h2>
+        </aside>
+        <aside clas="top-middle">
             <button id="start">Click to begin</button>
-            <h2 id="message"></h2>
-        </div>
+        </aside>
+        <canvas id="canvas"></canvas>
     </div>
     
+    <div class="level">
+        <h2 id="levelNumber"></h2>
+    </div>
+    <div class="messages">
+        <h2 id="message"></h2>
+    </div>
 
     <script src="js/app.js"></script>
 </body>
