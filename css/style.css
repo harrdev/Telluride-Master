@@ -1,8 +1,11 @@
+html {
+    width: 100vw;
+}
 body {
     margin: 0;
     padding: 0;
     height: 100%;
-    width: 100%;
+    width: 100vw;
     background-image: url("../files/pgBg.jpg");
     background-repeat: no-repeat;
     background-position: center center;
@@ -70,8 +73,8 @@ h1 {
     position: absolute;
     text-align: center;
     /* left: 38%; */
-    top: 40%;
-    width: 90%;
+    top: 48%;
+    width: 90vw;
     left: 5%;
 }
 
