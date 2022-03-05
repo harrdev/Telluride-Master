@@ -39,6 +39,7 @@ playerSprite.src = "files/sprites3.png";
 function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
   ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
 }
+//<-------------------------- Obstruction Sprite Class ----------------------->
 class Obstruction {
   constructor(x, y, moveY, width, height) {
     this.x = x;
@@ -64,7 +65,7 @@ class Obstruction {
     );
   }
 }
-//<--------------------------------------Lift buckets Section--------------------------------->
+//<--------------------------------------Lift buckets Handler Section--------------------------------->
 const bucketSprite = new Image();
 bucketSprite.src = "files/spritesMore.png";
 let buckets = [];
@@ -82,7 +83,7 @@ function handleBuckets() {
     bucket.y < -40 && buckets.splice(bucket, 1);
   }
 }
-//<-----------------------------------------Ski Lift Section---------------------------------->
+//<-----------------------------------------Ski Lift Handler Section---------------------------------->
 const liftSprite = new Image();
 liftSprite.src = "files/spritesMore.png";
 let lifts = [];
@@ -92,14 +93,14 @@ function handleLift() {
 
   for (let lift of lifts) {
     lift.update();
-    lift.draw(liftSprite, 60, 0, 1.5, 1.5);
+    lift.draw(liftSprite, 60, 0, 1.25, 1.25);
   }
 
   for (let lift of lifts) {
     lift.y < -60 && lifts.splice(lift, 1);
   }
 }
-//<------------------------------------Tree Object Section------------------------------------>
+//<------------------------------------Tree Handler Section------------------------------------>
 const treeSprite = new Image();
 treeSprite.src = "files/tree.png";
 let trees = [];
@@ -111,7 +112,7 @@ function handleTrees() {
 
   for (let tree of trees) {
     tree.update();
-    tree.draw(treeSprite, 0, 0, 1.5, 1.5);
+    tree.draw(treeSprite, 0, 0, 1.25, 1.25);
   }
 
   for (let tree of trees) {
@@ -243,8 +244,8 @@ function start() {
       player.height,
       player.x,
       player.y,
-      player.width * 1.5,
-      player.height * 1.5
+      player.width * 1.25,
+      player.height * 1.25
     );
     audio.play();
     handleBonus();
