@@ -60,17 +60,15 @@ class Bucket {
 }
 function handleBuckets() {
     // in the handle functions, I'm using a gameFrame variable that is set every game loop.  It is being used as a conditional with modulus for a little randomness
-    if (gameFrame % 90 === 0) {
-        buckets.push(new Bucket())
+    gameFrame % 90 === 0 && buckets.push(new Bucket())
+
+    for (let bucket of buckets) {
+        bucket.update()
+        bucket.draw()
     }
-    for (let i = 0; i < buckets.length; i++) {
-        buckets[i].update()
-        buckets[i].draw()
-    }
-    for (let i = 0; i < buckets.length; i++) {
-        if (buckets[i].y < -40) {
-            buckets.splice(i, 1)
-        }
+
+    for (let bucket of buckets) {
+        bucket.y < -40 && buckets.splice(bucket, 1)
     }
 }
 //<-----------------------------------------Ski Lift Section---------------------------------->
@@ -94,17 +92,15 @@ class Lift {
     }
 }
 function handleLift() {
-    if (gameFrame % 60 === 0) {
-        lifts.push(new Lift())
+    gameFrame % 60 === 0 && lifts.push(new Lift())
+
+    for (let lift of lifts) {
+        lift.update()
+        lift.draw()
     }
-    for (let i = 0; i < lifts.length; i++) {
-        lifts[i].update()
-        lifts[i].draw()
-    }
-    for (let i = 0; i < lifts.length; i++) {
-        if (lifts[i].y < -60) {
-            lifts.splice(i, 1)
-        }
+
+    for (let lift of lifts) {
+        lift.y < -60 && lifts.splice(lift, 1)
     }
 }
 //<------------------------------------Tree Object Section------------------------------------>
@@ -128,17 +124,15 @@ class Tree {
     }
 }
 function handleTrees() {
-    if (gameFrame % 12 === 0) {
-        trees.push(new Tree())
+    gameFrame % 12 === 0 && trees.push(new Tree())
+
+    for (let tree of trees) {
+        tree.update()
+        tree.draw()
     }
-    for (let i = 0; i < trees.length; i++) {
-        trees[i].update()
-        trees[i].draw()
-    }
-    for (let i = 0; i < trees.length; i++) {
-        if (trees[i].y < -60) {
-            trees.splice(i, 1)
-        }
+
+    for (let tree of trees) {
+        tree.y < -60 && trees.splice(tree, 1)
     }
 }
 //<-----------------------------------Jump Bonus Section----------------------------------->
@@ -163,49 +157,48 @@ class JumpBonus {
     }
 }
 function handleBonus() {
-    if (gameFrame % 160 === 0) {
-        jump.push(new JumpBonus())
+    gameFrame % 160 === 0 && jump.push(new JumpBonus())
+
+    for (let ramp of jump) {
+        ramp.update()
+        ramp.draw()
     }
-    for (let i = 0; i < jump.length; i++) {
-        jump[i].update()
-        jump[i].draw()
-    }
-    for (let i = 0; i < jump.length; i++) {
-        if (jump[i].y < -40) {
-            jump.splice(i, 1)
-        }
+
+    for (let ramp of jump) {
+        ramp.y < -40 && jump.splice(ramp, 1)
     }
 }
 //<------------------------------------Collision Detection------------------------------------>
 function detectCollision() {
-    for (let i = 0; i < trees.length; i++) {
-        // The +/- numbers are for some leeway in collision
-        if (trees[i].x > player.x + player.width - 5 ||
-            trees[i].x + trees[i].width - 2 < player.x ||
-            trees[i].y > player.y + player.height - 5 ||
-            trees[i].y + trees[i].height - 5 < player.y) {
+    for (let tree of trees) {
+        if (tree.x > player.x + player.width - 5 ||
+            tree.x + tree.width - 2 < player.x ||
+            tree.y > player.y + player.height - 5 ||
+            tree.y + tree.height - 5 < player.y) {
             // No collision
         } else {
             // Collision occuring
             gameOver = true
         }
     }
-    for (let i = 0; i < lifts.length; i++) {
-        if (lifts[i].x > player.x + player.width ||
-            lifts[i].x + lifts[i].width < player.x ||
-            lifts[i].y > player.y + player.height ||
-            lifts[i].y + lifts[i].height < player.y) {
+
+    for (let lift of lifts) {
+        if (lift.x > player.x + player.width ||
+            lift.x + lift.width < player.x ||
+            lift.y > player.y + player.height ||
+            lift.y + lift.height < player.y) {
             // No collision
         } else {
             // Collision occuring
             gameOver = true
         }
     }
-    for (let i = 0; i < jump.length; i++) {
-        if (jump[i].x > player.x + player.width ||
-            jump[i].x + jump[i].width < player.x ||
-            jump[i].y > player.y + player.height ||
-            jump[i].y + jump[i].height < player.y) {
+
+    for (let ramp of jump) {
+        if (ramp.x > player.x + player.width ||
+            ramp.x + ramp.width < player.x ||
+            ramp.y > player.y + player.height ||
+            ramp.y + ramp.height < player.y) {
             // No collision
             // Nothing to do if there's no collision
         } else {
