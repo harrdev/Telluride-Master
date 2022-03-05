@@ -8,7 +8,7 @@ const level = document.getElementById("levelNumber");
 const audio = new Audio("files/gameMusic.wav");
 const keys = [];
 game.width = 600;
-game.height = 600;
+game.height = 450;
 // gameFrame used as a counter, counting up every animationFrame. Used for creating random delays
 let gameFrame = 0;
 let gameOver = false;
@@ -36,7 +36,7 @@ const player = {
 const playerSprite = new Image();
 playerSprite.src = "files/sprites3.png";
 // Initialize skier/player. s = source, d = destination.  There are 9 args/params for ctx.drawImage with images on a sprite sheet
-function drawSprite(img, sX, sY, sW, sH, dX, dY, dW, dH) {
+function drawPlayer(img, sX, sY, sW, sH, dX, dY, dW, dH) {
   ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
 }
 //<-------------------------- Obstruction Sprite Class ----------------------->
@@ -236,7 +236,7 @@ function start() {
   if (gameOver === false) {
     requestAnimationFrame(start);
     ctx.clearRect(0, 0, game.width, game.height);
-    drawSprite(
+    drawPlayer(
       playerSprite,
       player.sX,
       player.sY,
@@ -329,3 +329,47 @@ document.getElementById("start").addEventListener("click", () => {
   level.innerText = "Level 1";
   start();
 });
+
+// Set up touch events for mobile, etc
+game.addEventListener(
+  "touchstart",
+  function (e) {
+    mousePos = getTouchPos(game, e);
+    let touch = e.touches[0];
+    const mouseEvent = new MouseEvent("mousedown", {
+      clientX: touch.clientX,
+      clientY: touch.clientY,
+    });
+    game.dispatchEvent(mouseEvent);
+  },
+  false
+);
+game.addEventListener(
+  "touchend",
+  function (e) {
+    const mouseEvent = new MouseEvent("mouseup", {});
+    game.dispatchEvent(mouseEvent);
+  },
+  false
+);
+game.addEventListener(
+  "touchmove",
+  function (e) {
+    let touch = e.touches[0];
+    const mouseEvent = new MouseEvent("mousemove", {
+      clientX: touch.clientX,
+      clientY: touch.clientY,
+    });
+    game.dispatchEvent(mouseEvent);
+  },
+  false
+);
+
+// Get the position of a touch relative to the canvas
+function getTouchPos(canvasDom, touchEvent) {
+  const rect = canvasDom.getBoundingClientRect();
+  return {
+    x: touchEvent.touches[0].clientX - rect.left,
+    y: touchEvent.touches[0].clientY - rect.top,
+  };
+}
