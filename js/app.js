@@ -330,46 +330,28 @@ document.getElementById("start").addEventListener("click", () => {
   start();
 });
 
-// Set up touch events for mobile, etc
-game.addEventListener(
-  "touchstart",
-  function (e) {
-    mousePos = getTouchPos(game, e);
-    let touch = e.touches[0];
-    const mouseEvent = new MouseEvent("mousedown", {
-      clientX: touch.clientX,
-      clientY: touch.clientY,
-    });
-    game.dispatchEvent(mouseEvent);
-  },
-  false
-);
-game.addEventListener(
-  "touchend",
-  function (e) {
-    const mouseEvent = new MouseEvent("mouseup", {});
-    game.dispatchEvent(mouseEvent);
-  },
-  false
-);
-game.addEventListener(
-  "touchmove",
-  function (e) {
-    let touch = e.touches[0];
-    const mouseEvent = new MouseEvent("mousemove", {
-      clientX: touch.clientX,
-      clientY: touch.clientY,
-    });
-    game.dispatchEvent(mouseEvent);
-  },
-  false
-);
+//<----------------- Touch Movement Logic ----------------->
+game.addEventListener("touchmove", handleMouseEvent);
 
-// Get the position of a touch relative to the canvas
-function getTouchPos(canvasDom, touchEvent) {
-  const rect = canvasDom.getBoundingClientRect();
-  return {
-    x: touchEvent.touches[0].clientX - rect.left,
-    y: touchEvent.touches[0].clientY - rect.top,
-  };
+function handleMouseEvent(e) {
+  let position = e.pageX - player.width / 2;
+  console.log("Position is: ", position);
+  if (position < 400 && player.x > 0 && jumping === false) {
+    console.log("Turning left");
+    player.x -= player.speed;
+    player.sX = 26;
+    player.width = 19;
+  } else if (
+    position >= 430 &&
+    player.x < game.width - player.width - 5 &&
+    jumping === false
+  ) {
+    console.log("Turning right");
+    player.x += player.speed;
+    player.sX = 46;
+    player.width = 19;
+  } else {
+    player.sX = 65;
+    player.width = 19;
+  }
 }
