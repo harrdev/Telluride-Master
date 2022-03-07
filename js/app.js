@@ -7,8 +7,14 @@ const startButton = document.getElementById("start");
 const level = document.getElementById("levelNumber");
 const audio = new Audio("files/gameMusic.wav");
 const keys = [];
-game.width = 600;
-game.height = 450;
+// Setting canvas size based on screen size
+if (window.innerWidth > 400) {
+  game.width = 600;
+  game.height = 600;
+} else if (window.innerWidth < 400) {
+  game.width = 380;
+  game.height = 500;
+}
 // gameFrame used as a counter, counting up every animationFrame. Used for creating random delays
 let gameFrame = 0;
 let gameOver = false;
@@ -17,11 +23,11 @@ let highScore = 0;
 let stylePoints = 0;
 // jumping is used to lock key events in a conditional to prevent players from moving in the air while jumping
 let jumping = false;
-let speed = 8;
+let speed = 7;
 // jumpCounter is used to ensure when collision with jumps jump happens that the bonus is only applied once.  Used in conditional to ensure this, and reset to 0 in same block of code
 let jumpCounter = 0;
-message.innerText =
-  "Press 'a' or left arrow to turn left, 'd' or right arrow to turn right.";
+// message.innerText =
+//   "Press 'a' or left arrow to turn left, 'd' or right arrow to turn right.";
 //<-----------------------------------Player/Skier Section----------------------------------->
 const player = {
   // Game.width & height set this way to place player in middle top portion of canvas
@@ -275,7 +281,7 @@ const endGame = () => {
   jumps = [];
   buckets = [];
   lifts = [];
-  speed = 8;
+  speed = 7;
   moveUp = 8;
   if (score > highScore) {
     highScore = score;
@@ -305,6 +311,7 @@ window.addEventListener("keyup", function (e) {
   player.sX = 65;
   player.width = 19;
 });
+
 function movePlayer() {
   if ((keys[65] || keys[37]) && player.x > 0 && jumping === false) {
     player.x -= player.speed;
@@ -327,26 +334,34 @@ document.getElementById("start").addEventListener("click", () => {
   message.style.display = "none";
   level.style.color = "green";
   level.innerText = "Level 1";
+  player.x = game.width / 2;
+  player.y = game.height / 5;
   start();
 });
-
 //<----------------- Touch Movement Logic ----------------->
+//**** NEED TO ADD TOUCHUP TO STRAIGHTEN OUT PLAYER */
+game.addEventListener(
+  "touchmove",
+  function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  },
+  false
+);
+
 game.addEventListener("touchmove", handleMouseEvent);
 
 function handleMouseEvent(e) {
   let position = e.pageX - player.width / 2;
-  console.log("Position is: ", position);
-  if (position < 400 && player.x > 0 && jumping === false) {
-    console.log("Turning left");
+  if (position < game.width / 2 - 15 && player.x > 0 && jumping === false) {
     player.x -= player.speed;
     player.sX = 26;
     player.width = 19;
   } else if (
-    position >= 430 &&
+    position >= game.width / 2 + 15 &&
     player.x < game.width - player.width - 5 &&
     jumping === false
   ) {
-    console.log("Turning right");
     player.x += player.speed;
     player.sX = 46;
     player.width = 19;
