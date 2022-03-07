@@ -37,7 +37,7 @@ const player = {
   height: 34,
   sX: 65,
   sY: 0,
-  speed: 2,
+  speed: 3,
 };
 const playerSprite = new Image();
 playerSprite.src = "files/sprites3.png";
@@ -350,6 +350,12 @@ game.addEventListener(
 );
 
 game.addEventListener("touchmove", handleMouseEvent);
+game.addEventListener("touchend", handleTouchEnd);
+
+function handleTouchEnd(e) {
+  player.sX = 65;
+  player.width = 19;
+}
 
 function handleMouseEvent(e) {
   let position = e.pageX - player.width / 2;

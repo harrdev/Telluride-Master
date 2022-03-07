@@ -44,6 +44,14 @@ h1 {
     max-width: 600px;
 }
 
+.top-left {
+    grid-area: top-left;
+}
+
+.top-right {
+    grid-area: top-right;
+}
+
 .top-left, .top-right {
     display: flex;
     justify-content: center;
@@ -51,17 +59,6 @@ h1 {
     background-color: lightblue;
     height: 100%;
     line-height: 50%;
-}
-
-.top-left {
-    grid-area: top-left;
-}
-
-.top-right {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    grid-area: top-right;
 }
 
 .top-middle {
