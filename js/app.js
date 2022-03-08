@@ -276,7 +276,7 @@ const endGame = () => {
   gameOver = false;
   audio.pause();
   audio.currentTime = 0.0;
-  startButton.style.display = "block";
+  // startButton.style.display = "block";
   trees = [];
   jumps = [];
   buckets = [];
@@ -330,7 +330,7 @@ function movePlayer() {
 }
 //<--------------------------------Start button event listener-------------------------------->
 document.getElementById("start").addEventListener("click", () => {
-  startButton.style.display = "none";
+  // startButton.style.display = "none";
   message.style.display = "none";
   level.style.color = "green";
   level.innerText = "Level 1";
