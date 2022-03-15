@@ -239,7 +239,7 @@ const difficulty = () => {
 };
 //<-----------------------------------------Game Loop----------------------------------------->
 function start() {
-  if (gameOver === false) {
+  if (!gameOver) {
     requestAnimationFrame(start);
     ctx.clearRect(0, 0, game.width, game.height);
     drawPlayer(
@@ -302,7 +302,7 @@ const endGame = () => {
 };
 //<-------------------------------Keys event / movement function------------------------------->
 window.addEventListener("keydown", function (e) {
-  if (jumping === false) {
+  if (!jumping) {
     keys[e.keyCode] = true;
   }
 });
@@ -313,7 +313,7 @@ window.addEventListener("keyup", function (e) {
 });
 
 function movePlayer() {
-  if ((keys[65] || keys[37]) && player.x > 0 && jumping === false) {
+  if ((keys[65] || keys[37]) && player.x > 0 && !jumping) {
     player.x -= player.speed;
     player.sX = 26;
     player.width = 19;
@@ -359,14 +359,14 @@ function handleTouchEnd(e) {
 
 function handleMouseEvent(e) {
   let position = e.pageX - player.width / 2;
-  if (position < game.width / 2 - 15 && player.x > 0 && jumping === false) {
+  if (position < game.width / 2 - 15 && player.x > 0 && !jumping) {
     player.x -= player.speed;
     player.sX = 26;
     player.width = 19;
   } else if (
     position >= game.width / 2 + 15 &&
     player.x < game.width - player.width - 5 &&
-    jumping === false
+    !jumping
   ) {
     player.x += player.speed;
     player.sX = 46;
